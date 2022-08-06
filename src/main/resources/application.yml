@@ -6,3 +6,8 @@ spring:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
     static-path-pattern: /static/**
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/everytime?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: root
