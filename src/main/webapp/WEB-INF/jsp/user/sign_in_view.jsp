@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인 화면</title>
+<title>로그인</title>
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
 	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -21,17 +21,17 @@
 </head>
 <body>
 	<div id="wrap">
-		<div class="login">
+		<div class="sign-in">
 			<h1 class="logo">
-				<a href="#"> <img src="/static/assets/img/everytime-logo.png"
-					alt="logo">
-				</a> <span>지금 <strong>에브리타임</strong>을 시작하세요!
-				</span>
+				<a href="#">
+					<img src="/static/assets/img/everytime-logo.png" alt="logo">
+				</a>
+				<span>지금 <strong>에브리타임</strong>을 시작하세요!</span>
 			</h1>
 
-			<input type="text" id="loginId" class="text" maxlength="20" placeholder="아이디">
+			<input type="text" id="loginId" maxlength="20" placeholder="아이디">
 
-			<input type="password" id="password" class="text" maxlength="20" placeholder="비밀번호">
+			<input type="password" id="password" maxlength="20" placeholder="비밀번호">
 
 			<button type="button" id="signInBtn">로그인</button>
 
@@ -56,14 +56,14 @@
 					alert("비밀번호를 입력하세요.");
 					return;
 				}
-				
+
 				// AJAX - DB select
 				$.ajax({
 					type : "POST",
 					url : "/user/sign_in",
 					data : {
-						"loginId":loginId,
-						"password":password
+						"loginId" : loginId,
+						"password" : password
 					},
 					success : function(data) {
 						if (data.result == "success") {

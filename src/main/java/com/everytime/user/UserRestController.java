@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.everytime.common.EncryptUtils;
 import com.everytime.user.bo.UserBO;
 import com.everytime.user.model.User;
 
@@ -19,14 +20,21 @@ public class UserRestController {
 	@Autowired
 	private UserBO userBO;
 
+	/**
+	 * 로그인
+	 * 
+	 * @param loginId
+	 * @param password
+	 * @return
+	 */
 	@PostMapping("/sign_in")
-	public Map<String, Object> test(
-			@RequestParam("loginId") String loginId,
+	public Map<String, Object> test(@RequestParam("loginId") String loginId,
 			@RequestParam("password") String password) {
 		Map<String, Object> map = new HashMap<>();
 
-		User user = userBO.getUserByLoginIdAndPassword(loginId, password);
+		String encryptPassword = EncryptUtils.md5(password);
 
+		User user = userBO.getUserByLoginIdAndPassword(loginId, encryptPassword);
 		if (user != null) {
 			// 로그인 성공
 			map.put("result", "success");
