@@ -3,6 +3,31 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.everytime.user.dao.UserDAO">
+	<insert id="insertUser" parameterType="map">
+		INSERT INTO `user`
+		(
+		`loginId`
+		, `password`
+		, `name`
+		, `email`
+		, `school`
+		, `schoolId`
+		, `createdAt`
+		, `updatedAt`
+		)
+		VALUES
+		(
+		#{loginId}
+		, #{password}
+		, #{name}
+		, #{email}
+		, #{school}
+		, #{schoolId}
+		, NOW()
+		, NOW()
+		)
+	</insert>
+
 	<select id="selectUserByLoginIdAndPassword" resultType="com.everytime.user.model.User">
 		SELECT
 			`id`

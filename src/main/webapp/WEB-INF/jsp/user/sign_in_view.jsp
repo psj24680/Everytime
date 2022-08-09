@@ -36,7 +36,7 @@
 			<button type="button" id="signInBtn">로그인</button>
 
 			<div id="register">
-				<span>에브리타임이 처음이신가요?</span> <a href="#">회원가입</a>
+				<span>에브리타임이 처음이신가요?</span> <a href="/user/sign_up_view">회원가입</a>
 			</div>
 		</div>
 	</div>

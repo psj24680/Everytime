@@ -24,7 +24,6 @@
 		<div class="sign-up">
 			<div>
 				<span>로그인 정보 입력</span>
-				
 				<input type="text" id="loginId" maxlength="20" placeholder="아이디 - 영문/숫자 4~20자">
 				<input type="password" id="password" maxlength="20" placeholder="비밀번호 - 영문/특문/숫자 2종류 이상 8~20자">
 				<input type="password" id="confirmPassword" maxlength="20" placeholder="비밀번호 확인">
@@ -33,12 +32,11 @@
 
 			<div>
 				<span>개인 정보 입력</span>
-				
-				<input type="text" id="nickname" placeholder="닉네임">
-				<input type="text" id="school"  placeholder="학교">
+				<input type="text" id="name" placeholder="닉네임">
+				<input type="text" id="school" placeholder="학교">
 				<input type="text" id="schoolId" placeholder="학번">
 			</div>
-			
+
 			<button type="button" id="signUpBtn">회원가입</button>
 		</div>
 	</div>
@@ -52,51 +50,87 @@
 					alert("아이디를 입력하세요.");
 					return;
 				}
-	
+				
+				// 정규식
+				let existKorById = loginId.search(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g);
+				let existNumById = loginId.search(/[0-9]/g);
+				if ((existKorById == 0) || (existNumById < 0) || loginId.length < 4) {
+					alert("아이디는 영어, 숫자가 조합된 4~20자를 입력하세요.");
+					return;
+				}
+
 				let password = $('#password').val().trim();
 				let confirmPassword = $('#confirmPassword').val().trim();
 				if (password == "" || confirmPassword == "") {
 					alert("비밀번호를 입력하세요.");
 					return;
 				}
-	
+
 				if (password != confirmPassword) {
 					alert("비밀번호가 일치하지 않습니다.");
 					$('#password').val("");
 					$('#confirmPassword').val("");
 					return;
 				}
-				
-				if (password.length < 8 || password.length > 20) {
-					alert("비밀번호는 영문, 특문, 숫자가 2종류 이상 조합된 8~20자로 입력하세요.");
+
+				// 정규식
+				let existNumByPw = password.search(/[0-9]/g);
+				let existEngByPw = password.search(/[a-z]/ig);
+				let existSpeByPw = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+				if ((existNumByPw < 0 && existEngByPw < 0) || (existEngByPw < 0 && existSpeByPw < 0) || (existSpeByPw < 0 && existNumByPw < 0) || password.length < 8) {
+					alert("비밀번호는 영문, 숫자, 특문이 2개 이상 조합된 8~20자를 입력하세요.");
 					return;
 				}
-				
-				// 정규식 - https://heeya7.tistory.com/37
-	
+
 				let email = $('#email').val().trim();
 				if (email == "") {
 					alert("이메일을 입력하세요.");
 					return;
 				}
-				
-				let nickname = $('#nickname').val().trim();
-				if (nickname == "") {
+
+				let name = $('#name').val().trim();
+				if (name == "") {
 					alert("닉네임을 입력하세요.");
 					return;
 				}
-				
+
 				let school = $('#school').val().trim();
 				if (school == "") {
 					alert("학교를 입력하세요.");
 					return;
 				}
-				
+
 				let schoolId = $('#schoolId').val().trim();
 				if (schoolId == "") {
 					alert("학번을 입력하세요.");
 					return;
 				}
+				
+				// AJAX - DB insert
+				$.ajax({
+					type : "POST",
+					url : "/user/sign_up",
+					data : {
+						"loginId" : loginId,
+						"password" : password,
+						"email" : email,
+						"name" : name,
+						"school" : school,
+						"schoolId" : schoolId
+					},
+					success : function(data) {
+						if (data.result == "success") {
+							// 회원가입 성공
+							alert("환영합니다. 로그인 페이지로 이동합니다.");
+							location.href = "/user/sign_in_view";
+						} else {
+							alert(data.result);
+						}
+					},
+					error : function(e) {
+						alert("회원가입 중 오류 발생");
+					}
+				});
 			});
 		});
 	</script>

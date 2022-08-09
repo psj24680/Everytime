@@ -8,7 +8,13 @@ import com.everytime.user.model.User;
 @Repository
 public interface UserDAO {
 
-	public User selectUserByLoginIdAndPassword(
+	public int insertUser(
 			@Param("loginId") String loginId,
-			@Param("password") String password);
+			@Param("password") String password,
+			@Param("email") String email,
+			@Param("name") String name,
+			@Param("school") String school,
+			@Param("schoolId") String schoolId);
+
+	public User selectUserByLoginIdAndPassword(@Param("loginId") String loginId, @Param("password") String password);
 }
