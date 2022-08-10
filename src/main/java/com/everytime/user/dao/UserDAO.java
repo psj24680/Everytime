@@ -12,9 +12,15 @@ public interface UserDAO {
 			@Param("loginId") String loginId,
 			@Param("password") String password,
 			@Param("email") String email,
-			@Param("name") String name,
+			@Param("nickname") String nickname,
 			@Param("school") String school,
 			@Param("schoolId") String schoolId);
 
-	public User selectUserByLoginIdAndPassword(@Param("loginId") String loginId, @Param("password") String password);
+	public boolean existLoginId(String loginId);
+
+	public boolean existNickname(String nickname);
+
+	public User selectUserByLoginIdAndPassword(
+			@Param("loginId") String loginId,
+			@Param("password") String password);
 }

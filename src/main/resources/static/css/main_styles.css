@@ -1,0 +1,190 @@
+@charset "UTF-8";
+
+.left-side {
+	width: 175px;
+	min-height: 300px;
+}
+
+.logged-out {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 175px;
+	height: 220px;
+	border: 1px solid #d6d6d6;
+	background-color: #f9f9f9;
+	padding: 15px;
+	margin-bottom: 5px;
+}
+
+.logged-out>img {
+	width: 60px;
+	height: 60px;
+	margin: 15px auto;
+}
+
+.nickname {
+	font-size: 18px;
+	font-weight: bold;
+	color: #393939;
+	text-align: center;
+	margin-bottom: 5px;
+}
+
+.school {
+	display: block;
+	font-size: 12px;
+	color: #a6a6a6;
+	text-align: center;
+	line-height: 15px;
+	margin: 0;
+}
+
+.logged-out>div {
+	display: flex;
+	margin-top: 15px;
+}
+
+.logged-out>div>a {
+	display: block;
+	height: 25px;
+	border: 1px solid #d6d6d6;
+	border-radius: 3px;
+	font-size: 13px;
+	color: #737373;
+	line-height: 25px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.my-page {
+	width: 64.5px;
+	margin-right: 5px;
+}
+
+.sign-out {
+	width: 69.5px;
+}
+
+.logged-in {
+	border: 1px solid #d6d6d6;
+	background-color: #f9f9f9;
+	padding: 30px 15px 15px 15px;
+	margin-bottom: 5px;
+}
+
+.logged-in>span {
+	display: block;
+	font-size: 14px;
+	color: #292929;
+	margin-bottom: 15px;
+}
+
+.logged-in>span>strong {
+	font-weight: bold;
+	color: #c62917;
+}
+
+.logged-in>a {
+	display: block;
+	text-decoration: none;
+	margin-bottom: 5px;
+}
+
+.sign-in-btn {
+	border: 1px solid #d6d6d6;
+	background-color: #fff;
+	color: #737373;
+}
+
+.sign-in-btn:hover {
+	color: #737373;
+}
+
+.sign-up-btn {
+	background-color: #c62917;
+	color: #fff;
+}
+
+.sign-up-btn:hover {
+	color: #fff;
+}
+
+.card2 {
+	border-top: 1px solid #d6d6d6;
+	border-left: 1px solid #d6d6d6;
+	border-right: 1px solid #d6d6d6;
+	margin-bottom: 5px;
+}
+
+.left-menu {
+	width: 175px;
+	height: 40px;
+	border-bottom: 1px solid #d6d6d6;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.left-menu:hover {
+	width: 100%;
+	background-color: #fff;
+	cursor: pointer;
+}
+
+.left-menu>img {
+	width: 20px;
+	height: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.left-menu>a {
+	color: #292929;
+	text-decoration: none;
+}
+
+.left-ad-card {
+	width: 175px;
+	height: 115px;
+	border: 1px solid #d6d6d6;
+	background-color: #f9f9f9;
+	padding: 30px 15px 15px 15px;
+	margin-bottom: 5px;
+}
+
+.main {
+	width: 600px;
+	margin-left: 10px;
+	margin-right: 10px;
+	background-color: #f9f9f9;
+}
+
+.banner {
+	width: inherit;
+	height: 160px;
+	margin-bottom: 20px;
+	border: 1px solid #d6d6d6;
+	background-color: #f9f9f9;
+}
+
+.board-box {
+	display: flex;
+	justify-content: space-between;
+}
+
+.board-card {
+	width: 295px;
+	height: 190px;
+	border: 1px solid #d6d6d6;
+	background-color: #f9f9f9;
+	margin-bottom: 10px;
+}
+
+.right-side {
+	width: 325px;
+	min-height: 400px;
+	border: 1px solid #d6d6d6;
+	background-color: #f9f9f9;
+}

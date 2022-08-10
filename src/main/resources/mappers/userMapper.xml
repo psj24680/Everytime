@@ -6,27 +6,45 @@
 	<insert id="insertUser" parameterType="map">
 		INSERT INTO `user`
 		(
-		`loginId`
-		, `password`
-		, `name`
-		, `email`
-		, `school`
-		, `schoolId`
-		, `createdAt`
-		, `updatedAt`
+			`loginId`
+			, `password`
+			, `email`
+			, `nickname`
+			, `school`
+			, `schoolId`
+			, `createdAt`
+			, `updatedAt`
 		)
 		VALUES
 		(
-		#{loginId}
-		, #{password}
-		, #{name}
-		, #{email}
-		, #{school}
-		, #{schoolId}
-		, NOW()
-		, NOW()
+			#{loginId}
+			, #{password}
+			, #{email}
+			, #{nickname}
+			, #{school}
+			, #{schoolId}
+			, NOW()
+			, NOW()
 		)
 	</insert>
+
+	<select id="existLoginId" parameterType="string" resultType="boolean">
+		SELECT
+			COUNT(*)
+		FROM
+			`user`
+		WHERE
+			`loginId` = #{loginId}
+	</select>
+
+	<select id="existNickname" parameterType="string" resultType="boolean">
+		SELECT
+			COUNT(*)
+		FROM
+			`user`
+		WHERE
+			`nickname` = #{nickname}
+	</select>
 
 	<select id="selectUserByLoginIdAndPassword" resultType="com.everytime.user.model.User">
 		SELECT
@@ -35,6 +53,7 @@
 			, `password`
 			, `name`
 			, `email`
+			, `nickname`
 			, `school`
 			, `schoolId`
 			, `schoolEmail`

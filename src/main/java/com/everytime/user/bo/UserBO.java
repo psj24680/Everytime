@@ -12,8 +12,16 @@ public class UserBO {
 	@Autowired
 	private UserDAO userDAO;
 
-	public int addUser(String loginId, String password, String email, String name, String school, String schoolId) {
-		return userDAO.insertUser(loginId, password, email, name, school, schoolId);
+	public int addUser(String loginId, String password, String email, String nickname, String school, String schoolId) {
+		return userDAO.insertUser(loginId, password, email, nickname, school, schoolId);
+	}
+
+	public boolean existLoginId(String loginId) {
+		return userDAO.existLoginId(loginId);
+	}
+
+	public boolean existNickname(String nickname) {
+		return userDAO.existNickname(nickname);
 	}
 
 	public User getUserByLoginIdAndPassword(String loginId, String password) {

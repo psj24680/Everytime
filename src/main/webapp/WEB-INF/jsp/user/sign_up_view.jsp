@@ -32,7 +32,7 @@
 
 			<div>
 				<span>개인 정보 입력</span>
-				<input type="text" id="name" placeholder="닉네임">
+				<input type="text" id="nickname" maxlength="10" placeholder="닉네임">
 				<input type="text" id="school" placeholder="학교">
 				<input type="text" id="schoolId" placeholder="학번">
 			</div>
@@ -88,10 +88,15 @@
 					return;
 				}
 
-				let name = $('#name').val().trim();
-				if (name == "") {
+				let nickname = $('#nickname').val().trim();
+				if (nickname == "") {
 					alert("닉네임을 입력하세요.");
 					return;
+				}
+				
+				if (nickname.length > 10) {
+					alert("닉네임은 10자 이내로 입력하세요.");
+					return
 				}
 
 				let school = $('#school').val().trim();
@@ -114,7 +119,7 @@
 						"loginId" : loginId,
 						"password" : password,
 						"email" : email,
-						"name" : name,
+						"nickname" : nickname,
 						"school" : school,
 						"schoolId" : schoolId
 					},
