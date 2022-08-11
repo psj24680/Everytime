@@ -3,7 +3,6 @@ package com.everytime.user;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -44,16 +43,4 @@ public class UserController {
 		return "user/sign_in_view";
 	}
 
-	/**
-	 * 메인
-	 * 
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping("/test")
-	public String test(Model model) {
-		model.addAttribute("viewName", "main/main");
-
-		return "template/layout";
-	}
 }

@@ -68,7 +68,7 @@
 					success : function(data) {
 						if (data.result == "success") {
 							// 로그인 성공
-							location.href = "/user/test";
+							location.href = "/main/main_view";
 						} else {
 							alert(data.result);
 						}
