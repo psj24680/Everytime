@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="d-flex">
 	<div class="left-side bg-light">
-
 		<c:choose>
 			<c:when test="${empty userId}">
 				<!-- 로그인 상태만 접근 가능 -->
@@ -52,17 +51,11 @@
 		<div class="banner"></div>
 
 		<div class="board-box flex-wrap">
-			<div class="board-card"></div>
-
-			<div class="board-card"></div>
-
-			<div class="board-card"></div>
-
-			<div class="board-card"></div>
-
-			<div class="board-card"></div>
-
-			<div class="board-card"></div>
+			<c:forEach var="board" items="${boardList}">
+				<div class="board-card">
+					<a href="/board/${board.id}/post_list_view">${board.name}</a>
+				</div>
+			</c:forEach>
 		</div>
 	</div>
 	<div class="right-side"></div>

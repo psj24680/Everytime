@@ -65,4 +65,23 @@
 			`loginId` = #{loginId}
 			AND `password` = #{password}
 	</select>
+	
+	<select id="selectUserById" resultType="com.everytime.user.model.User">
+		SELECT
+			`id`
+			, `loginId`
+			, `password`
+			, `name`
+			, `email`
+			, `nickname`
+			, `school`
+			, `schoolId`
+			, `schoolEmail`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`user`
+		WHERE
+			`id` = #{id}
+	</select>
 </mapper>

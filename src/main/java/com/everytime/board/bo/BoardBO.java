@@ -13,9 +13,14 @@ public class BoardBO {
 
 	@Autowired
 	BoardDAO boardDAO;
-	
-	// 게시판 불러오기
+
+	// 게시판 목록 불러오기
 	public List<Board> getBoardList() {
 		return boardDAO.selectBoardList();
+	}
+
+	// boardId로 게시판 불러오기
+	public Board getBoardByBoardId(int boardId) {
+		return boardDAO.selectBoardByBoardId(boardId);
 	}
 }
