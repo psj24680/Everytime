@@ -97,6 +97,7 @@ public class UserRestController {
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userLoginId", user.getLoginId());
 			session.setAttribute("userNickname", user.getNickname());
+			session.setAttribute("userSchool", user.getSchool());
 			session.setAttribute("userSchoolId", user.getSchoolId());
 		} else {
 			// 로그인 실패

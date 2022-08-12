@@ -24,7 +24,7 @@
 		<div class="sign-in">
 			<h1 class="logo">
 				<a href="#">
-					<img src="/static/assets/img/everytime-logo.png" alt="logo">
+					<img src="/static/img/everytime-logo.png" alt="logo">
 				</a>
 				<span>지금 <strong>에브리타임</strong>을 시작하세요!</span>
 			</h1>

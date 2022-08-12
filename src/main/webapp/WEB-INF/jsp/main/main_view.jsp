@@ -15,7 +15,7 @@
 			<c:when test="${not empty userId}">
 				<!-- 로그아웃 상태 -->
 				<div class="logged-out">
-					<img src="/static/assets/img/user-icon.png" alt="유저">
+					<img src="/static/img/user-icon.png" alt="유저">
 
 					<p class="nickname">${userNickname}</p>
 					<p class="school">이름</p>
@@ -30,15 +30,15 @@
 		</c:choose>
 		<div class="card2">
 			<div class="left-menu">
-				<img src="/static/assets/img/my-post-list-icon.png" alt="내가 쓴 글">
+				<img src="/static/img/my-post-list-icon.png" alt="내가 쓴 글">
 				<a href="">내가 쓴 글</a>
 			</div>
 			<div class="left-menu">
-				<img src="/static/assets/img/my-comment-list-icon.png" alt="댓글 단 댓글">
+				<img src="/static/img/my-comment-list-icon.png" alt="댓글 단 댓글">
 				<a href="">댓글 단 글</a>
 			</div>
 			<div class="left-menu">
-				<img src="/static/assets/img/my-clipping-list-icon.png" alt="내 스크랩">
+				<img src="/static/img/my-clipping-list-icon.png" alt="내 스크랩">
 				<a href="">내 스크랩</a>
 			</div>
 		</div>
