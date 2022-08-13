@@ -1,15 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<div class="">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<div>
 	<div class="board-title">
 		<a href="/board/${boardId}/post_list_view">${board.name}</a>
 	</div>
 
 	<div class="content-box">
 		<div class="write-box">
-			<p>
-				<input type="text" id="subject" autocomplete="off" placeholder="글 제목">
-			</p>
+			<c:if test="${boardId eq 1}">
+				<p>
+					<input type="text" id="subject" autocomplete="off" placeholder="글 제목">
+				</p>
+			</c:if>
 			<p>
 				<textarea id="content" class="smallplaceholder" placeholder="에브리타임은 누구나 기분 좋게 참여할 수 있는 커뮤니티를 만들기 위해 커뮤니티 이용규칙을 제정하여 운영하고 있습니다. 위반 시 게시물이 삭제되고 서비스 이용이 일정 기간 제한될 수 있습니다. 
 
@@ -40,7 +43,7 @@
 					<img alt="attach" src="/static/img/write-attatch-icon.png" id="attach">
 				</a>
 				<a href="#" class="save">
-					<img alt="save" src="/static/img/write-save-icon.png" id="save" data-user-id="${userId}">
+					<img alt="save" src="/static/img/write-save-icon.png" id="save" data-user-id="${userId}" data-board-id="${boardId}">
 				</a>
 				<a href="#" class="anonymous">
 					<img alt="anonymous" src="/static/img/write-anonymous-icon.png" id="anonymous">
@@ -67,12 +70,15 @@
 <script>
 	$(document).ready(function() {
 		// 파일 업로드 버튼 클릭
-		$('#attach').on('click', function(e) {
+		$('#attach').on('click', function() {
 			$('#file').click();
 		});
 
 		// 익명 체크 여부
-		$('#anonymous').on('click', function() {
+		$('#anonymous').on('click', function(e) {
+			// 창이 올라가는 것을 방지
+			e.preventDefault();
+			
 			let src = $(this).attr('src');
 			if (src.indexOf('active') < 0) {
 				$(this).attr('src', '/static/img/write-anonymous-active-icon.png');
@@ -81,25 +87,53 @@
 			}
 		});
 		
-		$('#save').on('click', function() {
-			// test
-			let userId = $(this).data('user-id');
-			let subject = $('#subject').val().trim();
-			let content = $('#content').val();
-			let src = $('#anonymous').attr('src');
-			if (src.indexOf('active') < 0) {
-				src = "익명 아님";
-			} else {
-				src = "익명";
-			}
-			
-			alert(userId + "\n" + subject+ "\n" + content + "\n" + src);
+		$('#save').on('click', function(e) {
+			// 창이 올라가는 것을 방지
+			e.preventDefault();
 			
 			// validation
-			/* let content = $('#content').val();
+			let boardId = $(this).data('board-id');
+			let userId = $(this).data('user-id');
+			
+			let subject = null;
+			if ($('#subject').val() != null) {
+				subject = $('#subject').val().trim();
+			}
+			
+			let content = $('#content').val();
 			if (content == "") {
 				alert("내용을 입력하세요.");
-			} */
+			}
+			
+			let anonymous = $('#anonymous').attr('src');
+			if (anonymous.indexOf('active') < 0) {
+				anonymous = "X";
+			} else {
+				anonymous = "O";
+			}
+			
+			// AJAX - DB insert
+			$.ajax({
+				type : "POST",
+				url : "/post/create",
+				data : {
+					"boardId" : boardId,
+					"userId" : userId,
+					"subject" : subject,
+					"content" : content,
+					"anonymous" : anonymous
+				},
+				success : function(data) {
+					if (data.result == "success") {
+						location.reload(true);
+					} else {
+						alert(data.result);
+					}
+				},
+				error : function(e) {
+					alert("글 저장 중 오류 발생");
+				}
+			});
 		});
 	});
 </script>
