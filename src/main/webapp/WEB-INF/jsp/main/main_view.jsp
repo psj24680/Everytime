@@ -53,7 +53,7 @@
 		<div class="board-box flex-wrap">
 			<c:forEach var="board" items="${boardList}">
 				<div class="board-card">
-					<a href="/board/${board.id}/post_list_view">${board.name}</a>
+					<a href="/board/${board.id}">${board.name}</a>
 				</div>
 			</c:forEach>
 		</div>

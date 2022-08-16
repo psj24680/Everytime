@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div>
 	<div class="board-title">
-		<a href="/board/${boardId}/post_list_view">${board.name}</a>
+		<a href="/board/${boardId}">${board.name}</a>
 	</div>
 
 	<div class="content-box">
@@ -52,17 +53,19 @@
 		</div>
 
 		<div class="post">
-			<a href="#">
-				<p class="post-title">title</p>
-				<p class="post-content">content</p>
-				<small class="post-time">time</small>
-				<div class="d-flex">
-					<p class="post-user">user</p>
-					<div>
-						<!-- 좋아요, 댓글 수 -->
+			<c:forEach var="post" items="${postList}">
+				<a href="/post/post_detail_view/${post.id}">
+					<p class="post-subject">${post.subject}</p>
+					<p class="post-content">${post.content}</p>
+					<small class="post-time"><fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm"/></small>
+					<div class="d-flex">
+						<p class="post-user">${post.userId}</p>
+						<div>
+							<!-- 좋아요, 댓글 수 -->
+						</div>
 					</div>
-				</div>
-			</a>
+				</a>
+			</c:forEach>
 		</div>
 	</div>
 </div>

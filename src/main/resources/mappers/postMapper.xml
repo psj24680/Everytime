@@ -25,4 +25,37 @@
 			, NOW()
 		)
 	</insert>
+	
+	<select id="selectPostListByBoardId" resultType="com.everytime.post.model.Post">
+		SELECT
+			`id`
+			, `boardId`
+			, `userId`
+			, `subject`
+			, `content`
+			, `anonymous`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`post`
+		WHERE
+			`boardId` = #{boardId}
+		ORDER BY `id` DESC
+	</select>
+	
+	<select id="selectPostById" resultType="com.everytime.post.model.Post">
+		SELECT
+			`id`
+			, `boardId`
+			, `userId`
+			, `subject`
+			, `content`
+			, `anonymous`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`post`
+		WHERE
+			`id` = #{id}
+	</select>
 </mapper>
