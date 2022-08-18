@@ -12,7 +12,7 @@ import com.everytime.board.model.Board;
 public class BoardBO {
 
 	@Autowired
-	BoardDAO boardDAO;
+	private BoardDAO boardDAO;
 
 	// 게시판 목록 불러오기
 	public List<Board> getBoardList() {

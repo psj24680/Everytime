@@ -39,25 +39,22 @@
 - 스포일러, 공포, 속임, 놀라게 하는 행위"></textarea>
 			</p>
 			<div>
-				<a href="#" class="attach">
-					<input type="file" id="file" class="d-none" accept=".jpg,.jpeg,.png,.gif">
-					<img alt="attach" src="/static/img/write-attatch-icon.png" id="attach">
-				</a>
-				<a href="#" class="save">
-					<img alt="save" src="/static/img/write-save-icon.png" id="save" data-user-id="${userId}" data-board-id="${boardId}">
-				</a>
-				<a href="#" class="anonymous">
-					<img alt="anonymous" src="/static/img/write-anonymous-icon.png" id="anonymous">
-				</a>
+				<ul class="option">
+					<li title="첨부" class="attach"></li>
+					<li title="완료" class="save"></li>
+					<li title="익명" class="anonymous"></li>
+				</ul>
 			</div>
 		</div>
 
 		<div class="post">
 			<c:forEach var="post" items="${postList}">
-				<a href="/post/post_detail_view/${post.id}">
+				<a href="/board/${board.id}/post/post_detail_view/${post.id}">
 					<p class="post-subject">${post.subject}</p>
 					<p class="post-content">${post.content}</p>
-					<small class="post-time"><fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm"/></small>
+					<small class="post-time">
+						<fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" />
+					</small>
 					<div class="d-flex">
 						<p class="post-user">${post.userId}</p>
 						<div>
@@ -78,43 +75,39 @@
 		});
 
 		// 익명 체크 여부
-		$('#anonymous').on('click', function(e) {
-			// 창이 올라가는 것을 방지
-			e.preventDefault();
-			
-			let src = $(this).attr('src');
-			if (src.indexOf('active') < 0) {
-				$(this).attr('src', '/static/img/write-anonymous-active-icon.png');
+		$('.anonymous').on('click', function() {
+			if ($('.anonymous').hasClass('active')) {
+				$('.anonymous').removeClass('active');
 			} else {
-				$(this).attr('src', '/static/img/write-anonymous-icon.png');
+				$('.anonymous').addClass('active');
 			}
 		});
-		
+
 		$('#save').on('click', function(e) {
 			// 창이 올라가는 것을 방지
 			e.preventDefault();
-			
+
 			// validation
 			let boardId = $(this).data('board-id');
 			let userId = $(this).data('user-id');
-			
+
 			let subject = null;
 			if ($('#subject').val() != null) {
 				subject = $('#subject').val().trim();
 			}
-			
+
 			let content = $('#content').val();
 			if (content == "") {
 				alert("내용을 입력하세요.");
 			}
-			
-			let anonymous = $('#anonymous').attr('src');
-			if (anonymous.indexOf('active') < 0) {
-				anonymous = "X";
-			} else {
+
+			let anonymous = null;
+			if ($('.anonymous').hasClass('active')) {
 				anonymous = "O";
+			} else {
+				anonymous = "X";
 			}
-			
+
 			// AJAX - DB insert
 			$.ajax({
 				type : "POST",

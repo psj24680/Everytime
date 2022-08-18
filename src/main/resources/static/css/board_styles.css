@@ -52,19 +52,46 @@
 	font-size: 12px;
 }
 
-.write-box>div>a>img {
-	width: 40px;
+.write-box>div>ul {
+	padding: 0;
+	margin: 0;
+}
+
+.write-box>div>ul.option {
 	height: 40px;
 }
 
-.anonymous {
-	float: right;
-	margin-right: 15px;
+.write-box>div>ul.option li {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	background-position: center center;
+	background-size: 40px 40px;
+	background-repeat: no-repeat;
+	cursor: pointer;
 }
 
-#save {
+.write-box>div>ul.option>li.attach {
+	float: left;
+	background-image: url(../img/write-attach-icon.png);
+}
+
+.write-box>div>ul.option>li.anonymous {
+	float: right;
+	margin-right: 15px;
+	background-image: url(../img/write-anonymous-icon.png);
+}
+
+.write-box>div>ul.option>li.anonymous.active {
+	float: right;
+	margin-right: 15px;
+	background-image: url(../img/write-anonymous-active-icon.png);
+}
+
+.write-box>div>ul.option>li.save {
 	float: right;
 	background-color: #c62917;
+	background-image: url(../img/write-save-icon.png);
 }
 
 #subject {

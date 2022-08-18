@@ -15,18 +15,31 @@ public class BoardController {
 
 	@Autowired
 	private BoardBO boardBO;
-	
+
 	@Autowired
 	private PostBO postBO;
-	
+
+	/**
+	 * 게시판 화면
+	 * 
+	 * @param boardId
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/{boardId}")
 	public String post_list_view(
 			@PathVariable int boardId,
 			Model model) {
+		// boardId로 게시판 이름 가져오기
 		model.addAttribute("board", boardBO.getBoardByBoardId(boardId));
+
+		// boardId로 게시판에 저장된 게시글 목록 불러오기
 		model.addAttribute("postList", postBO.getPostListByBoardId(boardId));
+
+		// JSP 경로
 		model.addAttribute("viewName", "board/post_list_view");
-		
+
 		return "template/layout";
 	}
+
 }

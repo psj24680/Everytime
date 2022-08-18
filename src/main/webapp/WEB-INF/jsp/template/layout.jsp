@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="/static/css/gnb_styles.css" type="text/css">
 <link rel="stylesheet" href="/static/css/main_styles.css" type="text/css">
 <link rel="stylesheet" href="/static/css/board_styles.css" type="text/css">
+<link rel="stylesheet" href="/static/css/post_styles.css" type="text/css">
 
 </head>
 <body>

@@ -17,11 +17,11 @@ public class PostBO {
 	public int addPost(int boardId, int userId, String subject, String content, String anonymous) {
 		return postDAO.insertPost(boardId, userId, subject, content, anonymous);
 	}
-	
+
 	public List<Post> getPostListByBoardId(int boardId) {
 		return postDAO.selectPostListByBoardId(boardId);
 	}
-	
+
 	public Post getPostById(int id) {
 		return postDAO.selectPostById(id);
 	}
