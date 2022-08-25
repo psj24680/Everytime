@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.everytime.comment_comment.dao.CommentCommentDAO">
+	<insert id="insertCommentComment">
+		INSERT INTO `comment_comment`
+		(
+			`boardId`
+			, `postId`
+			, `commentId`
+			, `userId`
+			, `content`
+			, `anonymous`
+			, `createdAt`
+			, `updatedAt`
+		)
+		VALUES
+		(
+			#{boardId}
+			, #{postId}
+			, #{userId}
+			, #{commentId}
+			, #{content}
+			, #{anonymous}
+			, NOW()
+			, NOW()
+		)
+	</insert>
+</mapper>

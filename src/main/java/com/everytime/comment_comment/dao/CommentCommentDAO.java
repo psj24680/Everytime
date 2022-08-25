@@ -1,22 +1,17 @@
-package com.everytime.comment.dao;
-
-import java.util.List;
+package com.everytime.comment_comment.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.everytime.comment.model.Comment;
-
 @Repository
-public interface CommentDAO {
+public interface CommentCommentDAO {
 
-	public int insertComment(
+	public int insertCommentComment(
 			@Param("boardId") int boardId,
 			@Param("postId") int postId,
+			@Param("commentId") int commentId,
 			@Param("userId") int userId,
 			@Param("content") String content,
 			@Param("anonymous") String anonymous);
-
-	public List<Comment> selectCommentListByPostId(int postId);
 
 }

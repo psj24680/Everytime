@@ -1,4 +1,4 @@
-package com.everytime.comment;
+package com.everytime.comment_comment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,29 +10,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.everytime.comment.bo.CommentBO;
+import com.everytime.comment_comment.bo.CommentCommentBO;
 
 @RestController
-@RequestMapping("/comment")
-public class CommentRestController {
+@RequestMapping("/comment_comment")
+public class CommentCommentRestController {
 
 	@Autowired
-	private CommentBO commentBO;
+	private CommentCommentBO commentCommentBO;
 
 	@RequestMapping("/create")
 	public Map<String, Object> create(
 			@RequestParam("boardId") int boardId,
 			@RequestParam("postId") int postId,
+			@RequestParam("commentId") int commentId,
 			@RequestParam("content") String content,
 			@RequestParam("anonymous") String anonymous,
 			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
 
-		int row = commentBO.addComment(boardId, postId, (int) session.getAttribute("userId"), content, anonymous);
+		int row = commentCommentBO.addCommentComment(boardId, postId, commentId, (int) session.getAttribute("userId"), content, anonymous);
 		if (row == 1) {
 			result.put("result", "success");
 		} else {
-			result.put("result", "댓글 저장을 실패했습니다. 다시 입력해주세요.");
+			result.put("result", "대댓글 저장을 실패했습니다. 다시 입력해주세요.");
 		}
 
 		return result;

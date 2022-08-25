@@ -2,58 +2,90 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<div>
+<div class="m-3">
 	<!-- 게시판 제목 -->
-	<div class="board-title">
-		<a href="/board/${boardId}">${board.name}</a>
+	<div class="ps-board-title">
+		<a href="#">자유게시판</a>
 	</div>
 
 	<!-- 게시글 -->
 	<article>
 		<!-- 게시글 내용 -->
-		<div class="post-box">
-			<div class="post-profile-box">
+		<div class="ps-post">
+			<div class="ps-profile">
 				<img alt="user-icon" src="/static/img/user-icon.png">
 
 				<div>
-					<h3>
-						<c:choose>
-							<c:when test="${post.anonymous eq 'O'}">
-								익명
-							</c:when>
-							<c:when test="${post.anonymous eq 'X'}">
-								${post.userId}
-							</c:when>
-						</c:choose>
-					</h3>
-					<span>
-						<fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" />
-					</span>
+					<h3>글쓴이</h3>
+					<span>시간</span>
 				</div>
 			</div>
 
-			<h2>${post.subject}</h2>
-			<p>${post.content}</p>
+			<h2>글 제목</h2>
+			<p>글 내용</p>
 
-			<ul class="status">
-				<li title="공감" class="like">0</li>
-				<li title="댓글" class="comment">0</li>
-				<li title="스크랩" class="clipping">0</li>
+			<ul class="ps-post-status">
+				<li title="공감" class="post-like-count">0</li>
+				<li title="댓글" class="post-comment-count">0</li>
+				<li title="스크랩" class="post-clipping-count">0</li>
 			</ul>
 
-			<div class="buttons">
-				<button type="button" class="like-btn">공감</button>
-				<button type="button" class="clipping-btn">스크랩</button>
+			<div class="ps-post-buttons">
+				<button type="button" class="post-like-btn">공감</button>
+				<button type="button" class="post-clipping-btn">스크랩</button>
 			</div>
 		</div>
 
-		<!-- 게시글 댓글 입력창-->
-		<div class="comment-box" style="display: block">
+		<!-- 댓글 -->
+		<c:forEach var="comment" items="${commentList}">
+			<div class="ps-comments">
+				<div>
+					<div class="ps-comments-profile">
+						<img alt="user-icon" src="/static/img/user-icon.png">
+	
+						<h3>${comment.userId}</h3>
+					</div>
+	
+					<ul class="ps-comments-status">
+						<li class="comment-comment-btn">대댓글</li>
+						<li class="comment-delete-btn">삭제</li>
+					</ul>
+				</div>
+				<p>${comment.content}</p>
+				<span>
+					<fmt:formatDate value="${comment.createdAt}" pattern="MM/dd HH:mm" />
+				</span>
+			</div>
+	
+			<!-- 대댓글 입력창 -->
+			<div class="ps-comment-comment-write d-none">
+				<input type="text" id="commentComment" name="commentComment" maxlength="300" autocomplete="off" placeholder="대댓글을 입력하세요.">
+	
+				<ul class="option">
+					<li title="익명" class="comment-comment-anonymous"></li>
+					<li title="완료" class="comment-comment-save" data-comment-id="${comment.id}"></li>
+				</ul>
+			</div>
+		</c:forEach>
+
+		<!-- 대댓글 -->
+		<!-- <div class="ps-comment-comment">
+			<div>
+				<img alt="user-icon" src="/static/img/user-icon.png">
+
+				<h3>익명(글쓴이)</h3>
+			</div>
+			<p>content</p>
+			<span>08/22 16:40</span>
+		</div> -->
+
+		<!-- 댓글 입력창-->
+		<div class="ps-comment-write">
 			<input type="text" id="comment" maxlength="300" autocomplete="off" placeholder="댓글을 입력하세요.">
 
 			<ul class="option">
-				<li title="완료" class="save"></li>
-				<li title="익명" class="anonymous"></li>
+				<li title="익명" class="comment-anonymous"></li>
+				<li title="완료" class="comment-save"></li>
 			</ul>
 		</div>
 	</article>
@@ -61,28 +93,29 @@
 
 <script>
 	$(document).ready(function() {
-		// 익명 여부 확인
-		$('.anonymous').on('click', function() {
-			if ($('.anonymous').hasClass('active')) {
-				$('.anonymous').removeClass('active');
+		// 댓글 익명
+		$('.comment-anonymous').on('click', function() {
+			if ($('.comment-anonymous').hasClass('active')) {
+				$('.comment-anonymous').removeClass('active');
 			} else {
-				$('.anonymous').addClass('active');
+				$('.comment-anonymous').addClass('active');
 			}
 		});
 
-		$('.save').on('click', function(e) {
+		// 댓글 저장
+		$('.comment-save').on('click', function(e) {
 			// 창이 올라가는 것을 방지
 			e.preventDefault();
 
 			// validation
 			let comment = $('#comment').val();
 			if (comment == "") {
-				alert("내용을 입력하세요.");
+				alert("댓글 내용을 입력하세요.");
 				return;
 			}
 
 			let anonymous = null;
-			if ($('.anonymous').hasClass('active')) {
+			if ($('.comment-anonymous').hasClass('active')) {
 				anonymous = "O";
 			} else {
 				anonymous = "X";
@@ -90,8 +123,6 @@
 
 			let boardId = ${boardId};
 			let postId = ${post.id};
-			let userId = ${userId};
-			// alert("comment: " + comment + "\nanonymous: " + anonymous + "\nboardId: " + boardId + "\npostId: " + postId + "\nuserId: " + userId);
 
 			$.ajax({
 				type : "POST",
@@ -99,7 +130,6 @@
 				data : {
 					"boardId" : boardId,
 					"postId" : postId,
-					"userId" : userId,
 					"content" : comment,
 					"anonymous" : anonymous
 				},
@@ -107,7 +137,74 @@
 					if (data.result == "success") {
 						location.reload(true);
 					} else {
-						alert(data.result);
+						alert(data.result + "!!!");
+					}
+				},
+				error : function(e) {
+					alert("댓글 저장 중 오류 발생");
+				}
+			})
+		});
+
+		// 대댓글 버튼 클릭
+		$('.comment-comment-btn').on('click', function() {
+			if ($(this).parent().parent().parent().next().hasClass('d-none')) {
+				$(this).parent().parent().parent().next().removeClass('d-none');
+				// alert("대댓글 창 띄움");
+			} else {
+				$(this).parent().parent().parent().next().addClass('d-none');
+				// alert("대댓글 창 없앰");
+			}
+		});
+
+		// 대댓글 익명
+		$('.comment-comment-anonymous').on('click', function() {
+			if ($('.comment-comment-anonymous').hasClass('active')) {
+				$('.comment-comment-anonymous').removeClass('active');
+			} else {
+				$('.comment-comment-anonymous').addClass('active');
+			}
+		});
+
+		// 대댓글 저장
+		$('.comment-comment-save').on('click', function(e) {
+			// 창이 올라가는 것을 방지
+			e.preventDefault();
+
+			// validation
+			let boardId = ${boardId};
+			let postId = ${post.id};
+			let commentId = $(this).data('comment-id');
+
+			let commentComment = $(this).parent().parent().find('#commentComment').val();
+			if (commentComment == "") {
+				alert("대댓글 내용을 입력하세요.");
+				return;
+			}
+
+			let anonymous = null;
+			if ($('.comment-comment-anonymous').hasClass('active')) {
+				anonymous = "O";
+			} else {
+				anonymous = "X";
+			}
+
+			// alert("[     대댓글 DB insert     ]" + "\nCommentId: " + commentId + "\nComment-Comment: " + commentComment + "\nComment-Comment Anonymous: " + anonymous);
+			$.ajax({
+				type : "POST",
+				url : "/comment_comment/create",
+				data : {
+					"boardId" : boardId,
+					"postId" : postId,
+					"commentId" : commentId,
+					"content" : commentComment,
+					"anonymous" : anonymous
+				},
+				success : function(data) {
+					if (data.result == "success") {
+						location.reload(true);
+					} else {
+						alert(data.result + "???");
 					}
 				},
 				error : function(e) {

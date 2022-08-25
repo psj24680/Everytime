@@ -25,4 +25,21 @@
 			, NOW()
 		)
 	</insert>
+	
+	<select id="selectCommentListByPostId" parameterType="int" resultType="com.everytime.comment.model.Comment">
+		SELECT
+			`id`
+			, `boardId`
+			, `postId`
+			, `userId`
+			, `content`
+			, `anonymous`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`comment`
+		WHERE
+			`postId` = #{postId}
+		ORDER BY `id` ASC
+	</select>
 </mapper>

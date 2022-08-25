@@ -39,6 +39,12 @@ public class PermissionInterceptor implements HandlerInterceptor {
 			response.sendRedirect("/user/sign_in_view");
 			return false;
 		}
+		
+		// 비로그인 && /comment => 로그인 화면으로 redirect
+		if ((userLoginId == null && uri.startsWith("/comment"))) {
+			response.sendRedirect("/user/sign_in_view");
+			return false;
+		}
 
 		return true; // 요청된 Path로 Controller수행
 	}
