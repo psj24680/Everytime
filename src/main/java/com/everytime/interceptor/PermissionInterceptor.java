@@ -34,19 +34,15 @@ public class PermissionInterceptor implements HandlerInterceptor {
 		String uri = request.getRequestURI();
 		logger.info("########## uri: {}", uri);
 
-		// 비로그인 && /post => 로그인 화면으로 redirect
-		if ((userLoginId == null && uri.startsWith("/main")) || (userLoginId == null && uri.startsWith("/post"))) {
-			response.sendRedirect("/user/sign_in_view");
-			return false;
-		}
-		
-		// 비로그인 && /comment => 로그인 화면으로 redirect
-		if ((userLoginId == null && uri.startsWith("/comment"))) {
+		// 비로그인 && (/main || /board || /post) => 로그인 화면으로 redirect
+		if ((userLoginId == null && uri.startsWith("/main")) || (userLoginId == null && uri.startsWith("/board"))
+				|| (userLoginId == null && uri.startsWith("/post"))) {
 			response.sendRedirect("/user/sign_in_view");
 			return false;
 		}
 
-		return true; // 요청된 Path로 Controller수행
+		// 요청된 Path로 Controller수행
+		return true;
 	}
 
 	@Override

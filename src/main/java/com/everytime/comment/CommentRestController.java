@@ -27,6 +27,12 @@ public class CommentRestController {
 			@RequestParam("anonymous") String anonymous,
 			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
+		
+		// 로그인 여부 검사
+		if ((Integer) session.getAttribute("userId") == null) {
+			result.put("result", "로그인 후 이용해주세요.");
+			return result;
+		}
 
 		int row = commentBO.addComment(boardId, postId, (int) session.getAttribute("userId"), content, anonymous);
 		if (row == 1) {

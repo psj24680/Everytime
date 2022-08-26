@@ -5,7 +5,7 @@
 <div class="m-3">
 	<!-- 게시판 제목 -->
 	<div class="ps-board-title">
-		<a href="#">자유게시판</a>
+		<a href="/board/${boardId}">자유게시판</a>
 	</div>
 
 	<!-- 게시글 -->
@@ -16,13 +16,13 @@
 				<img alt="user-icon" src="/static/img/user-icon.png">
 
 				<div>
-					<h3>글쓴이</h3>
-					<span>시간</span>
+					<h3>${postView.user.nickname}</h3>
+					<span>${postView.post.createdAt}</span>
 				</div>
 			</div>
 
-			<h2>글 제목</h2>
-			<p>글 내용</p>
+			<h2>${postView.post.subject}</h2>
+			<p>${postView.post.content}</p>
 
 			<ul class="ps-post-status">
 				<li title="공감" class="post-like-count">0</li>
@@ -37,13 +37,13 @@
 		</div>
 
 		<!-- 댓글 -->
-		<c:forEach var="comment" items="${commentList}">
+		<c:forEach var="commentView" items="${postView.commentViewList}">
 			<div class="ps-comments">
 				<div>
 					<div class="ps-comments-profile">
 						<img alt="user-icon" src="/static/img/user-icon.png">
 	
-						<h3>${comment.userId}</h3>
+						<h3>${commentView.user.nickname}</h3>
 					</div>
 	
 					<ul class="ps-comments-status">
@@ -51,9 +51,9 @@
 						<li class="comment-delete-btn">삭제</li>
 					</ul>
 				</div>
-				<p>${comment.content}</p>
+				<p>${commentView.comment.content}</p>
 				<span>
-					<fmt:formatDate value="${comment.createdAt}" pattern="MM/dd HH:mm" />
+					<fmt:formatDate value="${commentView.comment.createdAt}" pattern="MM/dd HH:mm" />
 				</span>
 			</div>
 	
@@ -63,21 +63,24 @@
 	
 				<ul class="option">
 					<li title="익명" class="comment-comment-anonymous"></li>
-					<li title="완료" class="comment-comment-save" data-comment-id="${comment.id}"></li>
+					<li title="완료" class="comment-comment-save" data-comment-id="${commentView.comment.id}"></li>
 				</ul>
 			</div>
 		</c:forEach>
 
 		<!-- 대댓글 -->
-		<!-- <div class="ps-comment-comment">
-			<div>
-				<img alt="user-icon" src="/static/img/user-icon.png">
-
-				<h3>익명(글쓴이)</h3>
+		<c:forEach var="commentView" items="${postView.commentViewList}">
+			<div class="ps-comment-comment">
+				<div>
+					<img alt="user-icon" src="/static/img/user-icon.png">
+	
+					<!-- ${commentView.comment_comment.userId} -->
+					<h3>???</h3>
+				</div>
+				<p>${commentView.comment_comment.content}</p>
+				<span>${commentView.comment_comment.createdAt}</span>
 			</div>
-			<p>content</p>
-			<span>08/22 16:40</span>
-		</div> -->
+		</c:forEach>
 
 		<!-- 댓글 입력창-->
 		<div class="ps-comment-write">
@@ -122,7 +125,7 @@
 			}
 
 			let boardId = ${boardId};
-			let postId = ${post.id};
+			let postId = ${postView.post.id};
 
 			$.ajax({
 				type : "POST",
@@ -137,7 +140,8 @@
 					if (data.result == "success") {
 						location.reload(true);
 					} else {
-						alert(data.result + "!!!");
+						alert(data.result);
+						location.href = "/user/sign_in_view";
 					}
 				},
 				error : function(e) {
@@ -173,7 +177,7 @@
 
 			// validation
 			let boardId = ${boardId};
-			let postId = ${post.id};
+			let postId = ${postView.post.id};
 			let commentId = $(this).data('comment-id');
 
 			let commentComment = $(this).parent().parent().find('#commentComment').val();
@@ -204,7 +208,8 @@
 					if (data.result == "success") {
 						location.reload(true);
 					} else {
-						alert(data.result + "???");
+						alert(data.result);
+						location.href = "/user/sign_in_view";
 					}
 				},
 				error : function(e) {

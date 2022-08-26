@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper
-	namespace="com.everytime.comment_comment.dao.CommentCommentDAO">
+<mapper namespace="com.everytime.comment_comment.dao.CommentCommentDAO">
 	<insert id="insertCommentComment">
 		INSERT INTO `comment_comment`
 		(
@@ -28,4 +27,22 @@
 			, NOW()
 		)
 	</insert>
+
+	<select id="selectCommentCommentListByCommentId" parameterType="int" resultType="com.everytime.comment_comment.model.CommentComment">
+		SELECT
+			`id`
+			, `boardId`
+			, `postId`
+			, `commentId`
+			, `userId`
+			, `content`
+			, `anonymous`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`comment_comment`
+		WHERE
+			`commentId` = #{commentId}
+		ORDER BY `id` ASC;
+	</select>
 </mapper>

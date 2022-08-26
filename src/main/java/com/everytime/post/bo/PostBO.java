@@ -5,14 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.everytime.comment.bo.CommentBO;
 import com.everytime.post.dao.PostDAO;
 import com.everytime.post.model.Post;
+import com.everytime.post.model.PostView;
+import com.everytime.user.bo.UserBO;
 
 @Service
 public class PostBO {
 
 	@Autowired
 	private PostDAO postDAO;
+
+	@Autowired
+	private UserBO userBO;
+
+	@Autowired
+	private CommentBO commentBO;
 
 	public int addPost(int boardId, int userId, String subject, String content, String anonymous) {
 		return postDAO.insertPost(boardId, userId, subject, content, anonymous);
@@ -25,4 +34,31 @@ public class PostBO {
 	public Post getPostById(int id) {
 		return postDAO.selectPostById(id);
 	}
+
+	/**
+	 * boardId, postId로 게시글 상세 정보 가져오기
+	 * 
+	 * @param boardId
+	 * @param postId
+	 * @return PostView
+	 */
+	public PostView generatePostViewByBoardIdAndPostId(int boardId, int postId) {
+		// return 할 PostView 생성
+		PostView postView = new PostView();
+
+		// 글 정보
+		Post post = getPostById(postId);
+		postView.setPost(post);
+
+		// 글쓴이 정보
+		postView.setUser(userBO.getUserById(post.getUserId()));
+
+		// 댓글 정보
+		postView.setCommentViewList(commentBO.generateCommentViewListByPostId(postId));
+
+		// 좋아요, 스크랩
+
+		return postView;
+	}
+
 }

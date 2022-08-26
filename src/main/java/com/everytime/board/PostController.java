@@ -33,10 +33,13 @@ public class PostController {
 			@PathVariable("postId") int postId,
 			Model model) {
 		// postId로 게시글 내용 가져오기
-		model.addAttribute("post", postBO.getPostById(postId));
+//		model.addAttribute("post", postBO.getPostById(postId));
 
 		// postId로 댓글 목록 가져오기
-		model.addAttribute("commentList", commentBO.getCommentListByPostId(postId));
+//		model.addAttribute("commentList", commentBO.getCommentListByPostId(postId));
+		
+		// PostView로 한번에 가져오기
+		model.addAttribute("postView", postBO.generatePostViewByBoardIdAndPostId(boardId, postId));
 		
 		// JSP 경로
 		model.addAttribute("viewName", "post/post_detail_view");

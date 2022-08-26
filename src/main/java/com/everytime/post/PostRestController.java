@@ -22,8 +22,7 @@ public class PostRestController {
 	@RequestMapping("/create")
 	public Map<String, Object> create(
 			@RequestParam("boardId") int boardId,
-			@RequestParam(value = "subject",
-			required = false) String subject,
+			@RequestParam(value = "subject", required = false) String subject,
 			@RequestParam("content") String content,
 			@RequestParam("anonymous") String anonymous,
 			HttpSession session) {
