@@ -8,6 +8,7 @@ public class Comment {
 	private int postId;
 	private int userId;
 	private String content;
+	private String anonymous;
 	private Date createdAt;
 	private Date updatedAt;
 
@@ -49,6 +50,14 @@ public class Comment {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getAnonymous() {
+		return anonymous;
+	}
+
+	public void setAnonymous(String anonymous) {
+		this.anonymous = anonymous;
 	}
 
 	public Date getCreatedAt() {

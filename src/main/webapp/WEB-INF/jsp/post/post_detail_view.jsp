@@ -5,7 +5,7 @@
 <div class="m-3">
 	<!-- 게시판 제목 -->
 	<div class="ps-board-title">
-		<a href="/board/${boardId}">자유게시판</a>
+		<a href="#">자유게시판</a>
 	</div>
 
 	<!-- 게시글 -->
@@ -16,13 +16,26 @@
 				<img alt="user-icon" src="/static/img/user-icon.png">
 
 				<div>
-					<h3>${postView.user.nickname}</h3>
-					<span>${postView.post.createdAt}</span>
+					<c:choose>
+						<c:when test="${postView.post.anonymous eq 'O'}">
+							<h3>익명</h3>
+						</c:when>
+						<c:when test="${postView.post.anonymous eq 'X'}">
+							<h3>${postView.user.nickname}</h3>
+						</c:when>
+					</c:choose>
+					<span>
+						<fmt:formatDate value="${postView.post.createdAt}" pattern="MM/dd HH:mm" />
+					</span>
 				</div>
 			</div>
 
 			<h2>${postView.post.subject}</h2>
 			<p>${postView.post.content}</p>
+			
+			<c:if test="${not empty postView.imagePath}">
+				<img alt="uploaded-image" src="${postView.imagePath}" class="uploaded-image">
+			</c:if>
 
 			<ul class="ps-post-status">
 				<li title="공감" class="post-like-count">0</li>
@@ -43,7 +56,14 @@
 					<div class="ps-comments-profile">
 						<img alt="user-icon" src="/static/img/user-icon.png">
 	
-						<h3>${commentView.user.nickname}</h3>
+						<c:choose>
+							<c:when test="${commentView.comment.anonymous eq 'O'}">
+								<h3>익명</h3>
+							</c:when>
+							<c:when test="${commentView.comment.anonymous eq 'X'}">
+								<h3>${commentView.user.nickname}</h3>
+							</c:when>
+					</c:choose>
 					</div>
 	
 					<ul class="ps-comments-status">
@@ -57,6 +77,21 @@
 				</span>
 			</div>
 	
+			<!-- 대댓글 -->
+			<c:forEach var="commentComment" items="${commentView.comment_comment}">
+				<div class="ps-comment-comment">
+					<div>
+						<img alt="user-icon" src="/static/img/user-icon.png">
+		
+						<h3>${commentComment.userId}</h3>
+					</div>
+					<p>${commentComment.content}</p>
+					<span>
+						<fmt:formatDate value="${commentComment.createdAt}" pattern="MM/dd HH:mm" />
+					</span>
+				</div>
+			</c:forEach>
+			
 			<!-- 대댓글 입력창 -->
 			<div class="ps-comment-comment-write d-none">
 				<input type="text" id="commentComment" name="commentComment" maxlength="300" autocomplete="off" placeholder="대댓글을 입력하세요.">
@@ -65,20 +100,6 @@
 					<li title="익명" class="comment-comment-anonymous"></li>
 					<li title="완료" class="comment-comment-save" data-comment-id="${commentView.comment.id}"></li>
 				</ul>
-			</div>
-		</c:forEach>
-
-		<!-- 대댓글 -->
-		<c:forEach var="commentView" items="${postView.commentViewList}">
-			<div class="ps-comment-comment">
-				<div>
-					<img alt="user-icon" src="/static/img/user-icon.png">
-	
-					<!-- ${commentView.comment_comment.userId} -->
-					<h3>???</h3>
-				</div>
-				<p>${commentView.comment_comment.content}</p>
-				<span>${commentView.comment_comment.createdAt}</span>
 			</div>
 		</c:forEach>
 
@@ -152,11 +173,11 @@
 
 		// 대댓글 버튼 클릭
 		$('.comment-comment-btn').on('click', function() {
-			if ($(this).parent().parent().parent().next().hasClass('d-none')) {
-				$(this).parent().parent().parent().next().removeClass('d-none');
+			if ($('.ps-comment-write').prev().hasClass('d-none')) {
+				$('.ps-comment-write').prev().removeClass('d-none');
 				// alert("대댓글 창 띄움");
 			} else {
-				$(this).parent().parent().parent().next().addClass('d-none');
+				$('.ps-comment-write').prev().addClass('d-none');
 				// alert("대댓글 창 없앰");
 			}
 		});

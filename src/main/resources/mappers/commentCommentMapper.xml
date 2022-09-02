@@ -19,8 +19,8 @@
 		(
 			#{boardId}
 			, #{postId}
-			, #{userId}
 			, #{commentId}
+			, #{userId}
 			, #{content}
 			, #{anonymous}
 			, NOW()

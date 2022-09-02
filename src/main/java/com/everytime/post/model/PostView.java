@@ -7,6 +7,7 @@ import com.everytime.user.model.User;
 
 public class PostView {
 	private Post post;
+	private String imagePath;
 	private User user;
 	private List<CommentView> commentViewList;
 
@@ -16,6 +17,14 @@ public class PostView {
 
 	public void setPost(Post post) {
 		this.post = post;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	public User getUser() {

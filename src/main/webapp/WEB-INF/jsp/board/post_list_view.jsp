@@ -38,12 +38,14 @@
 - 음란물, 성적 수치심을 유발하는 행위 
 - 스포일러, 공포, 속임, 놀라게 하는 행위"></textarea>
 			</p>
+			<div class="file-name d-none"></div>
 			<div>
 				<ul class="option">
 					<li title="첨부" class="attach"></li>
-					<li title="완료" class="save"></li>
+					<li title="완료" class="save" data-board-id="${boardId}"></li>
 					<li title="익명" class="anonymous"></li>
 				</ul>
+				<input type="file" id="file" class="d-none" accept=".jpg,.jpeg,.png,.gif">
 			</div>
 		</div>
 
@@ -70,8 +72,30 @@
 <script>
 	$(document).ready(function() {
 		// 파일 업로드 버튼 클릭
-		$('#attach').on('click', function() {
+		$('.attach').on('click', function() {
 			$('#file').click();
+		});
+
+		// 파일 업로드를 했을 때 확장자 이름 노출, 파일 확장자 검증
+		$('#file').on('change', function(e) {
+			let fileName = e.target.files[0].name; // ex) test-image.jpg
+			let arr = fileName.split(".");
+
+			// 확장자 검증
+			if (arr.length < 2
+					|| (arr[arr.length - 1] != 'jpg'
+							&& arr[arr.length - 1] != 'jpeg'
+							&& arr[arr.length - 1] != 'png'
+							&& arr[arr.length - 1] != 'gif')) {
+				alert("이미지 파일만 업로드 할 수 있습니다.");
+				$(this).val("");
+				$('.file-name').text("");
+				return;
+			}
+
+			// 임시 파일명 노출
+			$('.file-name').removeClass('d-none');
+			$('.file-name').text(fileName);
 		});
 
 		// 익명 체크 여부
@@ -83,13 +107,14 @@
 			}
 		});
 
-		$('#save').on('click', function(e) {
+		$('.save').on('click', function(e) {
 			// 창이 올라가는 것을 방지
 			e.preventDefault();
 
+			alert("글 저장 실행");
+
 			// validation
 			let boardId = $(this).data('board-id');
-			let userId = $(this).data('user-id');
 
 			let subject = null;
 			if ($('#subject').val() != null) {
@@ -108,17 +133,22 @@
 				anonymous = "X";
 			}
 
+			// form태그 생성
+			let formData = new FormData();
+			formData.append("boardId", boardId);
+			formData.append("subject", subject);
+			formData.append("content", content);
+			formData.append("anonymous", anonymous);
+			formData.append("file", $('#file')[0].files[0]);
+
 			// AJAX - DB insert
 			$.ajax({
 				type : "POST",
 				url : "/post/create",
-				data : {
-					"boardId" : boardId,
-					"userId" : userId,
-					"subject" : subject,
-					"content" : content,
-					"anonymous" : anonymous
-				},
+				data : formData,
+				encType : "multipart/form-data",
+				processData : false,
+				contentType : false,
 				success : function(data) {
 					if (data.result == "success") {
 						location.reload(true);

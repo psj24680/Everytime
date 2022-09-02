@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.everytime.post.bo.PostBO;
 
@@ -25,10 +26,18 @@ public class PostRestController {
 			@RequestParam(value = "subject", required = false) String subject,
 			@RequestParam("content") String content,
 			@RequestParam("anonymous") String anonymous,
+			@RequestParam(value = "file", required = false) MultipartFile file,
 			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
+		String userLoginId = null;
 
-		int row = postBO.addPost(boardId, (int) session.getAttribute("userId"), subject, content, anonymous);
+		// 이미지 파일이 있을 경우
+		if (file != null) {
+			userLoginId = (String) session.getAttribute("userLoginId");
+		}
+
+		int row = postBO.addPost(boardId, (int) session.getAttribute("userId"), subject, content, anonymous,
+				userLoginId, file);
 		if (row == 1) {
 			result.put("result", "success");
 		} else {
