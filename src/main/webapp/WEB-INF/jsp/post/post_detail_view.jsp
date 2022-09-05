@@ -49,7 +49,7 @@
 			</div>
 		</div>
 
-		<!-- 댓글 -->
+		<%-- 댓글 --%>
 		<c:forEach var="commentView" items="${postView.commentViewList}">
 			<div class="ps-comments">
 				<div>
@@ -77,7 +77,7 @@
 				</span>
 			</div>
 	
-			<!-- 대댓글 -->
+			<%-- 대댓글 --%>
 			<c:forEach var="commentComment" items="${commentView.comment_comment}">
 				<div class="ps-comment-comment">
 					<div>
@@ -92,7 +92,7 @@
 				</div>
 			</c:forEach>
 			
-			<!-- 대댓글 입력창 -->
+			<%-- 대댓글 입력창 --%>
 			<div class="ps-comment-comment-write d-none">
 				<input type="text" id="commentComment" name="commentComment" maxlength="300" autocomplete="off" placeholder="대댓글을 입력하세요.">
 	
