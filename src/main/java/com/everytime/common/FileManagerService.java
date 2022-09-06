@@ -12,7 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class FileManagerService {
 
-	public final static String FILE_UPLOAD_PATH = "D:\\parksungjae\\spring_personal_project\\clone_everytime\\workspace\\images/";
+//	public final static String FILE_UPLOAD_PATH = "D:\\parksungjae\\spring_personal_project\\clone_everytime\\workspace\\images/";
+	public final static String FILE_UPLOAD_PATH = "/home/ec2-user/images/";
 
 	/**
 	 * userLoginId로 디렉토리명 만들고 그 디렉토리에 file 저장
@@ -62,4 +63,5 @@ public class FileManagerService {
 			Files.delete(path);
 		}
 	}
+
 }
