@@ -3,14 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div class="m-3">
-	<!-- 게시판 제목 -->
+	<%-- 게시판 제목 --%>
 	<div class="ps-board-title">
 		<a href="#">자유게시판</a>
 	</div>
 
-	<!-- 게시글 -->
+	<%-- 게시글 --%>
 	<article>
-		<!-- 게시글 내용 -->
+		<%-- 게시글 내용 --%>
 		<div class="ps-post">
 			<div class="ps-profile">
 				<img alt="user-icon" src="/static/img/user-icon.png">
@@ -38,13 +38,13 @@
 			</c:if>
 
 			<ul class="ps-post-status">
-				<li title="공감" class="post-like-count">0</li>
+				<li title="좋아요" class="post-like-count">${postView.likeCount}</li>
 				<li title="댓글" class="post-comment-count">0</li>
 				<li title="스크랩" class="post-clipping-count">0</li>
 			</ul>
 
 			<div class="ps-post-buttons">
-				<button type="button" class="post-like-btn">공감</button>
+				<button type="button" class="post-like-btn" data-board-id="${postView.post.boardId}" data-post-id="${postView.post.id}" data-user-id="${userId}">공감</button>
 				<button type="button" class="post-clipping-btn">스크랩</button>
 			</div>
 		</div>
@@ -103,7 +103,7 @@
 			</div>
 		</c:forEach>
 
-		<!-- 댓글 입력창-->
+		<%-- 댓글 입력창 --%>
 		<div class="ps-comment-write">
 			<input type="text" id="comment" maxlength="300" autocomplete="off" placeholder="댓글을 입력하세요.">
 
@@ -117,6 +117,31 @@
 
 <script>
 	$(document).ready(function() {
+		// 좋아요
+		$('.post-like-btn').on('click', function() {
+			let boardId = $(this).data('board-id');
+			let postId = $(this).data('post-id');
+			let userId = $(this).data('user-id');
+			
+			$.ajax({
+				type : "POST",
+				url : "/like",
+				data : {
+					"boardId" : boardId,
+					"postId" : postId,
+					"userId" : userId
+				},
+				success : function(data) {
+					if (data.result == "success") {
+						location.reload(true);
+					}
+				},
+				error : function(e) {
+					alert("좋아요 중 오류 발생");
+				}
+			});
+		});
+		
 		// 댓글 익명
 		$('.comment-anonymous').on('click', function() {
 			if ($('.comment-anonymous').hasClass('active')) {

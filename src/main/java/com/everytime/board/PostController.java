@@ -23,14 +23,14 @@ public class PostController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/{boardId}/post/post_detail_view/{postId}")
+	@RequestMapping("/{boardId}/post/{postId}")
 	public String postDetailView(
 			@PathVariable("boardId") int boardId,
 			@PathVariable("postId") int postId,
 			Model model) {
 		// PostView 생성
 		model.addAttribute("postView", postBO.generatePostViewByBoardIdAndPostId(boardId, postId));
-		
+
 		// JSP 경로
 		model.addAttribute("viewName", "post/post_detail_view");
 

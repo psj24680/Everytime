@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.everytime.comment.bo.CommentBO;
 import com.everytime.common.FileManagerService;
+import com.everytime.like.bo.LikeBO;
 import com.everytime.post.dao.PostDAO;
 import com.everytime.post.model.Post;
 import com.everytime.post.model.PostView;
@@ -26,6 +27,9 @@ public class PostBO {
 
 	@Autowired
 	private CommentBO commentBO;
+
+	@Autowired
+	private LikeBO likeBO;
 
 	@Autowired
 	private FileManagerService fileManager;
@@ -88,7 +92,12 @@ public class PostBO {
 		// 댓글 정보
 		postView.setCommentViewList(commentBO.generateCommentViewListByPostId(postId));
 
-		// 좋아요, 스크랩
+		// 좋아요 개수
+		postView.setLikeCount(likeBO.getLikeCountByPostId(postId));
+
+		// 댓글 개수
+
+		// 스크랩 개수
 
 		return postView;
 	}
