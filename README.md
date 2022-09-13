@@ -7,7 +7,7 @@
 <br>
 
 ## URL / 주소
-- http://34.219.91.63:8080/main/main_view
+- [http://34.219.91.63:8080/main/main_view](http://34.213.248.167:8080/main/main_view)
 - 테스트 계정
   - ID: admin
   - PASSWORD: admin
