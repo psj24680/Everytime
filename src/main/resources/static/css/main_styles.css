@@ -175,11 +175,53 @@
 }
 
 .board-card {
-	width: 295px;
-	height: 190px;
-	border: 1px solid #d6d6d6;
-	background-color: #f9f9f9;
-	margin-bottom: 10px;
+    width: 295px;
+    height: 200px;
+    border: 1px solid #d6d6d6;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+}
+
+.board-card>h3 {
+    margin: 0;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.board-card>h3>a {
+    line-height: 20px;
+    color: #c62917;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.board-card>a {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    padding: 10px;
+    border-top: 1px solid #e3e3e3;
+    text-decoration: none;
+}
+
+.board-card>a>p {
+    height: 17px;
+    line-height: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #444444;
+    font-size: 14px;
+    margin: 0;
+}
+
+.board-card>a>small {
+    margin-left: 10px;
+    height: 17px;
+    line-height: 18px;
+    color: #a6a6a6;
+    font-size: 11px;
+    letter-spacing: 0;
 }
 
 .right-side {

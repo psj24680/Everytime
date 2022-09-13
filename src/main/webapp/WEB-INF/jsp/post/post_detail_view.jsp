@@ -3,14 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div class="m-3">
-	<!-- 게시판 제목 -->
+	<%-- 게시판 제목 --%>
 	<div class="ps-board-title">
 		<a href="#">자유게시판</a>
 	</div>
 
-	<!-- 게시글 -->
+	<%-- 게시글 --%>
 	<article>
-		<!-- 게시글 내용 -->
+		<%-- 게시글 내용 --%>
 		<div class="ps-post">
 			<div class="ps-profile">
 				<img alt="user-icon" src="/static/img/user-icon.png">
@@ -38,19 +38,20 @@
 			</c:if>
 
 			<ul class="ps-post-status">
-				<li title="공감" class="post-like-count">0</li>
+				<li title="좋아요" class="post-like-count">${postView.likeCount}</li>
 				<li title="댓글" class="post-comment-count">0</li>
 				<li title="스크랩" class="post-clipping-count">0</li>
 			</ul>
 
 			<div class="ps-post-buttons">
-				<button type="button" class="post-like-btn">공감</button>
+				<button type="button" class="post-like-btn" data-board-id="${postView.post.boardId}" data-post-id="${postView.post.id}" data-user-id="${userId}">공감</button>
 				<button type="button" class="post-clipping-btn">스크랩</button>
 			</div>
 		</div>
 
 		<%-- 댓글 --%>
 		<c:forEach var="commentView" items="${postView.commentViewList}">
+		<div class="test">
 			<div class="ps-comments">
 				<div>
 					<div class="ps-comments-profile">
@@ -63,7 +64,7 @@
 							<c:when test="${commentView.comment.anonymous eq 'X'}">
 								<h3>${commentView.user.nickname}</h3>
 							</c:when>
-					</c:choose>
+						</c:choose>
 					</div>
 	
 					<ul class="ps-comments-status">
@@ -83,7 +84,14 @@
 					<div>
 						<img alt="user-icon" src="/static/img/user-icon.png">
 		
-						<h3>${commentComment.userId}</h3>
+						<c:choose>
+							<c:when test="${commentComment.anonymous eq 'O'}">
+								<h3>익명</h3>
+							</c:when>
+							<c:when test="${commentComment.anonymous eq 'X'}">
+								<h3>${commentComment.userId}</h3>
+							</c:when>
+						</c:choose>
 					</div>
 					<p>${commentComment.content}</p>
 					<span>
@@ -101,9 +109,11 @@
 					<li title="완료" class="comment-comment-save" data-comment-id="${commentView.comment.id}"></li>
 				</ul>
 			</div>
+			</div>
 		</c:forEach>
+		
 
-		<!-- 댓글 입력창-->
+		<%-- 댓글 입력창 --%>
 		<div class="ps-comment-write">
 			<input type="text" id="comment" maxlength="300" autocomplete="off" placeholder="댓글을 입력하세요.">
 
@@ -117,6 +127,31 @@
 
 <script>
 	$(document).ready(function() {
+		// 좋아요
+		$('.post-like-btn').on('click', function() {
+			let boardId = $(this).data('board-id');
+			let postId = $(this).data('post-id');
+			let userId = $(this).data('user-id');
+			
+			$.ajax({
+				type : "POST",
+				url : "/like",
+				data : {
+					"boardId" : boardId,
+					"postId" : postId,
+					"userId" : userId
+				},
+				success : function(data) {
+					if (data.result == "success") {
+						location.reload(true);
+					}
+				},
+				error : function(e) {
+					alert("좋아요 중 오류 발생");
+				}
+			});
+		});
+		
 		// 댓글 익명
 		$('.comment-anonymous').on('click', function() {
 			if ($('.comment-anonymous').hasClass('active')) {
@@ -173,12 +208,10 @@
 
 		// 대댓글 버튼 클릭
 		$('.comment-comment-btn').on('click', function() {
-			if ($('.ps-comment-write').prev().hasClass('d-none')) {
-				$('.ps-comment-write').prev().removeClass('d-none');
-				// alert("대댓글 창 띄움");
+			if ($(this).parent().parent().parent().nextAll('.ps-comment-comment-write').hasClass('d-none')) {
+				$(this).parent().parent().parent().nextAll('.ps-comment-comment-write').removeClass('d-none');
 			} else {
-				$('.ps-comment-write').prev().addClass('d-none');
-				// alert("대댓글 창 없앰");
+				$(this).parent().parent().parent().nextAll('.ps-comment-comment-write').addClass('d-none');
 			}
 		});
 

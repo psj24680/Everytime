@@ -51,7 +51,7 @@
 
 		<div class="post">
 			<c:forEach var="post" items="${postList}">
-				<a href="/board/${board.id}/post/post_detail_view/${post.id}">
+				<a href="/board/${board.id}/post/${post.id}">
 					<p class="post-subject">${post.subject}</p>
 					<p class="post-content">${post.content}</p>
 					<small class="post-time">
@@ -60,7 +60,7 @@
 					<div class="d-flex">
 						<p class="post-user">${post.userId}</p>
 						<div>
-							<!-- 좋아요, 댓글 수 -->
+							<%-- 좋아요, 댓글, 스크랩 수 --%>
 						</div>
 					</div>
 				</a>

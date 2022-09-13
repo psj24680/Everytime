@@ -40,6 +40,8 @@ public class MainController {
 		List<Board> boardList = boardBO.getBoardList();
 		model.addAttribute("boardList", boardList);
 
+		// 최근 게시글 불러오기
+
 		model.addAttribute("viewName", "main/main_view");
 
 		return "template/layout";

@@ -53,7 +53,29 @@
 		<div class="board-box flex-wrap">
 			<c:forEach var="board" items="${boardList}">
 				<div class="board-card">
-					<a href="/board/${board.id}">${board.name}</a>
+					<h3>
+						<a href="/board/${board.id}">${board.name}</a>
+					</h3>
+					<c:choose>
+						<c:when test="${board.id eq 1}">
+							<a>
+								<p>test</p>
+								<small>time</small>
+							</a>
+							<a>
+								<p>test</p>
+								<small>time</small>
+							</a>
+							<a>
+								<p>test</p>
+								<small>time</small>
+							</a>
+							<a>
+								<p>test</p>
+								<small>time</small>
+							</a>
+						</c:when>
+					</c:choose>
 				</div>
 			</c:forEach>
 		</div>
