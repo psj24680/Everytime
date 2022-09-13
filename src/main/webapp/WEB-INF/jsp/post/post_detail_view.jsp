@@ -51,6 +51,7 @@
 
 		<%-- 댓글 --%>
 		<c:forEach var="commentView" items="${postView.commentViewList}">
+		<div class="test">
 			<div class="ps-comments">
 				<div>
 					<div class="ps-comments-profile">
@@ -63,7 +64,7 @@
 							<c:when test="${commentView.comment.anonymous eq 'X'}">
 								<h3>${commentView.user.nickname}</h3>
 							</c:when>
-					</c:choose>
+						</c:choose>
 					</div>
 	
 					<ul class="ps-comments-status">
@@ -83,7 +84,14 @@
 					<div>
 						<img alt="user-icon" src="/static/img/user-icon.png">
 		
-						<h3>${commentComment.userId}</h3>
+						<c:choose>
+							<c:when test="${commentComment.anonymous eq 'O'}">
+								<h3>익명</h3>
+							</c:when>
+							<c:when test="${commentComment.anonymous eq 'X'}">
+								<h3>${commentComment.userId}</h3>
+							</c:when>
+						</c:choose>
 					</div>
 					<p>${commentComment.content}</p>
 					<span>
@@ -101,7 +109,9 @@
 					<li title="완료" class="comment-comment-save" data-comment-id="${commentView.comment.id}"></li>
 				</ul>
 			</div>
+			</div>
 		</c:forEach>
+		
 
 		<%-- 댓글 입력창 --%>
 		<div class="ps-comment-write">
@@ -198,12 +208,10 @@
 
 		// 대댓글 버튼 클릭
 		$('.comment-comment-btn').on('click', function() {
-			if ($('.ps-comment-write').prev().hasClass('d-none')) {
-				$('.ps-comment-write').prev().removeClass('d-none');
-				// alert("대댓글 창 띄움");
+			if ($(this).parent().parent().parent().nextAll('.ps-comment-comment-write').hasClass('d-none')) {
+				$(this).parent().parent().parent().nextAll('.ps-comment-comment-write').removeClass('d-none');
 			} else {
-				$('.ps-comment-write').prev().addClass('d-none');
-				// alert("대댓글 창 없앰");
+				$(this).parent().parent().parent().nextAll('.ps-comment-comment-write').addClass('d-none');
 			}
 		});
 
