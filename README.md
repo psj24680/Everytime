@@ -18,7 +18,7 @@
 - 프로젝트 기간: 2022.08.02 ~ 2022.09.00
 - 개발 환경
   - 언어: Java, JavaScript, HTML, CSS, SQL
-  - 프레임워크: Spring, MyBatis, Bootstrap
+  - 프레임워크: Spring, MyBatis, Bootstrap, JQuery
   - 서버: AWS
   - DB: MySQL
 
