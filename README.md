@@ -11,7 +11,7 @@
 - 테스트 계정
   - ID: admin
   - PASSWORD: admin
-  - 
+
 <br>
 
 ## Decription / 프로젝트 정보
