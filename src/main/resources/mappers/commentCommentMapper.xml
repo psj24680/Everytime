@@ -9,7 +9,7 @@
 			`boardId`
 			, `postId`
 			, `commentId`
-			, `userId`
+			, `nickname`
 			, `content`
 			, `anonymous`
 			, `createdAt`
@@ -20,7 +20,7 @@
 			#{boardId}
 			, #{postId}
 			, #{commentId}
-			, #{userId}
+			, #{nickname}
 			, #{content}
 			, #{anonymous}
 			, NOW()
@@ -34,7 +34,7 @@
 			, `boardId`
 			, `postId`
 			, `commentId`
-			, `userId`
+			, `nickname`
 			, `content`
 			, `anonymous`
 			, `createdAt`

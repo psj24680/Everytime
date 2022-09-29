@@ -13,7 +13,7 @@ public interface CommentDAO {
 	public int insertComment(
 			@Param("boardId") int boardId,
 			@Param("postId") int postId,
-			@Param("userId") int userId,
+			@Param("nickname") String nickname,
 			@Param("content") String content,
 			@Param("anonymous") String anonymous);
 

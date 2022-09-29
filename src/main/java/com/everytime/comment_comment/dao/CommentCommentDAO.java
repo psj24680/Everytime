@@ -14,7 +14,7 @@ public interface CommentCommentDAO {
 			@Param("boardId") int boardId,
 			@Param("postId") int postId,
 			@Param("commentId") int commentId,
-			@Param("userId") int userId,
+			@Param("nickname") String nickname,
 			@Param("content") String content,
 			@Param("anonymous") String anonymous);
 

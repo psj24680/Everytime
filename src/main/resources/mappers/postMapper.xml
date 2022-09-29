@@ -7,7 +7,7 @@
 		INSERT INTO `post`
 		(
 			`boardId`
-			, `userId`
+			, `nickname`
 			, `subject`
 			, `content`
 			, `anonymous`
@@ -17,7 +17,7 @@
 		VALUES
 		(
 			#{boardId}
-			, #{userId}
+			, #{nickname}
 			, #{subject}
 			, #{content}
 			, #{anonymous}
@@ -58,7 +58,7 @@
 		SELECT
 			`id`
 			, `boardId`
-			, `userId`
+			, `nickname`
 			, `subject`
 			, `content`
 			, `anonymous`
@@ -75,7 +75,7 @@
 		SELECT
 			`id`
 			, `boardId`
-			, `userId`
+			, `nickname`
 			, `subject`
 			, `content`
 			, `anonymous`

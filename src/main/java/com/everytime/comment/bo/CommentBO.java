@@ -10,7 +10,6 @@ import com.everytime.comment.dao.CommentDAO;
 import com.everytime.comment.model.Comment;
 import com.everytime.comment.model.CommentView;
 import com.everytime.comment_comment.bo.CommentCommentBO;
-import com.everytime.user.bo.UserBO;
 
 @Service
 public class CommentBO {
@@ -19,13 +18,10 @@ public class CommentBO {
 	private CommentDAO commentDAO;
 
 	@Autowired
-	private UserBO userBO;
-
-	@Autowired
 	private CommentCommentBO commentCommentBO;
 
-	public int addComment(int boardId, int postId, int userId, String content, String anonymous) {
-		return commentDAO.insertComment(boardId, postId, userId, content, anonymous);
+	public int addComment(int boardId, int postId, String nickname, String content, String anonymous) {
+		return commentDAO.insertComment(boardId, postId, nickname, content, anonymous);
 	}
 
 	public List<Comment> getCommentListByPostId(int postId) {
@@ -43,9 +39,6 @@ public class CommentBO {
 
 			// 댓글 정보
 			commentView.setComment(comment);
-
-			// 댓글쓴이 정보 - comment의 userId로 user정보를 가져옴.
-			commentView.setUser(userBO.getUserById(comment.getUserId()));
 
 			// 대댓글들 정보 - commentCommentBO로 commentId보내면 BO에서 return
 			int commentId = comment.getId();

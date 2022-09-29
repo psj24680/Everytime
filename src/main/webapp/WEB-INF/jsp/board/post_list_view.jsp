@@ -52,17 +52,48 @@
 		<div class="post">
 			<c:forEach var="post" items="${postList}">
 				<a href="/board/${board.id}/post/${post.id}">
-					<p class="post-subject">${post.subject}</p>
-					<p class="post-content">${post.content}</p>
-					<small class="post-time">
-						<fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" />
-					</small>
-					<div class="d-flex">
-						<p class="post-user">${post.userId}</p>
-						<div>
-							<%-- 좋아요, 댓글, 스크랩 수 --%>
-						</div>
-					</div>
+					<c:choose>
+						<c:when test="${board.id eq 1}">
+							<p class="post-subject">${post.subject}</p>
+							<p class="post-content">${post.content}</p>
+							<small class="post-time">
+								<fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" />
+							</small>
+							<div class="d-flex">
+								<c:choose>
+									<c:when test="${post.anonymous eq 'O'}">
+										<p class="post-user">익명</p>
+									</c:when>
+									<c:when test="${post.anonymous eq 'X'}">
+										<p class="post-user">${post.nickname}</p>
+									</c:when>
+								</c:choose>
+								<div>
+									<%-- 좋아요, 댓글, 스크랩 수 --%>
+								</div>
+							</div>
+						</c:when>
+						<c:when test="${board.id ne 1}">
+							<p class="post-subject">${post.content}</p>
+							<br>
+							<small class="post-time">
+								<fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" />
+							</small>
+							<div class="d-flex">
+								<c:choose>
+									<c:when test="${post.anonymous eq 'O'}">
+										<p class="post-user">익명</p>
+									</c:when>
+									<c:when test="${post.anonymous eq 'X'}">
+										<p class="post-user">${post.nickname}</p>
+									</c:when>
+								</c:choose>
+								<div>
+									<%-- 좋아요, 댓글, 스크랩 수 --%>
+								</div>
+							</div>
+						</c:when>
+					</c:choose>
 				</a>
 			</c:forEach>
 		</div>
@@ -110,8 +141,6 @@
 		$('.save').on('click', function(e) {
 			// 창이 올라가는 것을 방지
 			e.preventDefault();
-
-			alert("글 저장 실행");
 
 			// validation
 			let boardId = $(this).data('board-id');

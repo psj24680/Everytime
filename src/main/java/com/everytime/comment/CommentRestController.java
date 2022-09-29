@@ -28,13 +28,7 @@ public class CommentRestController {
 			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
 		
-		// 로그인 여부 검사 - 추후 삭제
-		if ((Integer) session.getAttribute("userId") == null) {
-			result.put("result", "로그인 후 이용해주세요.");
-			return result;
-		}
-
-		int row = commentBO.addComment(boardId, postId, (int) session.getAttribute("userId"), content, anonymous);
+		int row = commentBO.addComment(boardId, postId, (String) session.getAttribute("userNickname"), content, anonymous);
 		if (row == 1) {
 			result.put("result", "success");
 		} else {

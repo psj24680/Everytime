@@ -24,8 +24,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws IOException {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
 		// 세션에 userLoginId가 있으면 로그인 상태
 		HttpSession session = request.getSession();
 		String userLoginId = (String) session.getAttribute("userLoginId");
@@ -34,9 +33,12 @@ public class PermissionInterceptor implements HandlerInterceptor {
 		String uri = request.getRequestURI();
 		logger.info("########## uri: {}", uri);
 
-		// 비로그인 && (/main || /board || /post) => 로그인 화면으로 redirect
-		if ((userLoginId == null && uri.startsWith("/main")) || (userLoginId == null && uri.startsWith("/board"))
-				|| (userLoginId == null && uri.startsWith("/post"))) {
+		// 비로그인 && (/main || /board || /post || /comment || /comment_comment) => 로그인 화면으로 redirect
+		if ((userLoginId == null && uri.startsWith("/main"))
+				|| (userLoginId == null && uri.startsWith("/board"))
+				|| (userLoginId == null && uri.startsWith("/post"))
+				|| (userLoginId == null && uri.startsWith("/comment"))
+				|| (userLoginId == null && uri.startsWith("/comment_comment"))) {
 			response.sendRedirect("/user/sign_in_view");
 			return false;
 		}
@@ -46,8 +48,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) {
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
 		// URI 확인
 		String uri = request.getRequestURI();
 		logger.info("########## postHandler: {}", uri);
@@ -62,8 +63,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
-			Exception ex) {
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 		// URI 확인
 		String uri = request.getRequestURI();
 		logger.info("########## afterCompletion: {}", uri);

@@ -8,7 +8,7 @@
 		(
 			`boardId`
 			, `postId`
-			, `userId`
+			, `nickname`
 			, `content`
 			, `anonymous`
 			, `createdAt`
@@ -18,7 +18,7 @@
 		(
 			#{boardId}
 			, #{postId}
-			, #{userId}
+			, #{nickname}
 			, #{content}
 			, #{anonymous}
 			, NOW()
@@ -31,7 +31,7 @@
 			`id`
 			, `boardId`
 			, `postId`
-			, `userId`
+			, `nickname`
 			, `content`
 			, `anonymous`
 			, `createdAt`

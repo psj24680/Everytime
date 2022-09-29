@@ -21,7 +21,7 @@
 							<h3>익명</h3>
 						</c:when>
 						<c:when test="${postView.post.anonymous eq 'X'}">
-							<h3>${postView.user.nickname}</h3>
+							<h3>${postView.post.nickname}</h3>
 						</c:when>
 					</c:choose>
 					<span>
@@ -30,7 +30,9 @@
 				</div>
 			</div>
 
-			<h2>${postView.post.subject}</h2>
+			<c:if test="${board.id eq 1}">
+				<h2>${postView.post.subject}</h2>
+			</c:if>
 			<p>${postView.post.content}</p>
 			
 			<c:if test="${not empty postView.imagePath}">
@@ -62,7 +64,7 @@
 								<h3>익명</h3>
 							</c:when>
 							<c:when test="${commentView.comment.anonymous eq 'X'}">
-								<h3>${commentView.user.nickname}</h3>
+								<h3>${commentView.comment.nickname}</h3>
 							</c:when>
 						</c:choose>
 					</div>
@@ -89,7 +91,7 @@
 								<h3>익명</h3>
 							</c:when>
 							<c:when test="${commentComment.anonymous eq 'X'}">
-								<h3>${commentComment.userId}</h3>
+								<h3>${commentComment.nickname}</h3>
 							</c:when>
 						</c:choose>
 					</div>

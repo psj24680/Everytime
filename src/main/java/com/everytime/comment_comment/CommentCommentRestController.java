@@ -28,14 +28,8 @@ public class CommentCommentRestController {
 			@RequestParam("anonymous") String anonymous,
 			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();		
-		
-		// 로그인 여부 검사
-		if ((Integer) session.getAttribute("userId") == null) {
-			result.put("result", "로그인 후 이용해주세요.");
-			return result;
-		}
 
-		int row = commentCommentBO.addCommentComment(boardId, postId, commentId, (int) session.getAttribute("userId"), content, anonymous);
+		int row = commentCommentBO.addCommentComment(boardId, postId, commentId, (String) session.getAttribute("userNickname"), content, anonymous);
 		if (row == 1) {
 			result.put("result", "success");
 		} else {

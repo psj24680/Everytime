@@ -31,13 +31,13 @@ public class PostRestController {
 		Map<String, Object> result = new HashMap<>();
 		String userLoginId = null;
 
-		// 이미지 파일이 있을 경우
+		// 이미지가 있으면 폴더명을 만들기 위한 userLoginId를 구한다.
 		if (file != null) {
 			userLoginId = (String) session.getAttribute("userLoginId");
 		}
 
-		int row = postBO.addPost(boardId, (int) session.getAttribute("userId"), subject, content, anonymous,
-				userLoginId, file);
+		// DB insert
+		int row = postBO.addPost(boardId, (String) session.getAttribute("userNickname"), subject, content, anonymous, userLoginId, file);
 		if (row == 1) {
 			result.put("result", "success");
 		} else {
