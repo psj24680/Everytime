@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.everytime.comment.bo.CommentBO;
+import com.everytime.comment_comment.bo.CommentCommentBO;
 import com.everytime.common.FileManagerService;
 import com.everytime.like.bo.LikeBO;
 import com.everytime.post.dao.PostDAO;
@@ -23,6 +24,9 @@ public class PostBO {
 
 	@Autowired
 	private CommentBO commentBO;
+	
+	@Autowired
+	private CommentCommentBO commentCommentBO;
 
 	@Autowired
 	private LikeBO likeBO;
@@ -89,10 +93,17 @@ public class PostBO {
 		postView.setLikeCount(likeBO.getLikeCountByPostId(postId));
 
 		// 댓글 개수
+		postView.setCommentCount(commentBO.getCommentCountByPostId(postId) + commentCommentBO.getCommentCommentCountByPostId(postId));
+		
+		// 대댓글 개수
 
 		// 스크랩 개수
 
 		return postView;
 	}
 
+	public List<Post> getPostListByNickname(String nickname) {
+		return postDAO.selectPostListByNickname(nickname);
+	}
+	
 }

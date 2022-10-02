@@ -28,4 +28,8 @@ public class CommentCommentBO {
 		return commentCommentDAO.selectCommentCommentListByCommentId(commentId);
 	}
 
+	public int getCommentCommentCountByPostId(int postId) {
+		return commentCommentDAO.selectCommentCommentCountByPostId(postId);
+	}
+
 }

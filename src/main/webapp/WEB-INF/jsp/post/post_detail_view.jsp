@@ -2,10 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<% pageContext.setAttribute("replaceChar", "\n"); %>
 <div class="m-3">
 	<%-- 게시판 제목 --%>
 	<div class="ps-board-title">
-		<a href="#">자유게시판</a>
+		<a href="#">${board.name}</a>
 	</div>
 
 	<%-- 게시글 --%>
@@ -33,7 +35,7 @@
 			<c:if test="${board.id eq 1}">
 				<h2>${postView.post.subject}</h2>
 			</c:if>
-			<p>${postView.post.content}</p>
+			<p class="test">${fn:replace(postView.post.content, replaceChar, "<br>")}</p>
 			
 			<c:if test="${not empty postView.imagePath}">
 				<img alt="uploaded-image" src="${postView.imagePath}" class="uploaded-image">
@@ -41,7 +43,7 @@
 
 			<ul class="ps-post-status">
 				<li title="좋아요" class="post-like-count">${postView.likeCount}</li>
-				<li title="댓글" class="post-comment-count">0</li>
+				<li title="댓글" class="post-comment-count">${postView.commentCount}</li>
 				<li title="스크랩" class="post-clipping-count">0</li>
 			</ul>
 
@@ -61,7 +63,14 @@
 	
 						<c:choose>
 							<c:when test="${commentView.comment.anonymous eq 'O'}">
-								<h3>익명</h3>
+								<c:choose>
+									<c:when test="${commentView.comment.nickname eq postView.post.nickname}">
+										<h3 class="writer">익명(글쓴이)</h3>
+									</c:when>
+									<c:otherwise>
+										<h3>익명</h3>
+									</c:otherwise>
+								</c:choose>
 							</c:when>
 							<c:when test="${commentView.comment.anonymous eq 'X'}">
 								<h3>${commentView.comment.nickname}</h3>
@@ -88,7 +97,14 @@
 		
 						<c:choose>
 							<c:when test="${commentComment.anonymous eq 'O'}">
-								<h3>익명</h3>
+								<c:choose>
+									<c:when test="${commentComment.nickname eq postView.post.nickname}">
+										<h3 class="writer">익명(글쓴이)</h3>
+									</c:when>
+									<c:otherwise>
+										<h3>익명</h3>
+									</c:otherwise>
+								</c:choose>
 							</c:when>
 							<c:when test="${commentComment.anonymous eq 'X'}">
 								<h3>${commentComment.nickname}</h3>

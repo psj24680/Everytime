@@ -5,6 +5,7 @@
 	width: 780px;
 	height: 60px;
 	border: 1px solid #d6d6d6;
+	margin-bottom: 5px;
 	padding: 15px;
 }
 
@@ -19,7 +20,6 @@
 
 .content-box {
 	width: 780px;
-	margin-top: 5px;
 }
 
 .write-box {

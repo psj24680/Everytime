@@ -19,4 +19,6 @@ public interface CommentDAO {
 
 	public List<Comment> selectCommentListByPostId(int postId);
 
+	public int selectCommentCountByPostId(int postId);
+
 }

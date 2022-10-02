@@ -51,4 +51,8 @@ public class CommentBO {
 		return commentViewList;
 	}
 
+	public int getCommentCountByPostId(int postId) {
+		return commentDAO.selectCommentCountByPostId(postId);
+	}
+	
 }

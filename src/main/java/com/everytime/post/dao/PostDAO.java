@@ -20,4 +20,5 @@ public interface PostDAO {
 
 	public Post selectPostById(int id);
 
+	public List<Post> selectPostListByNickname(String nickname);
 }

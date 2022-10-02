@@ -31,7 +31,7 @@
 		<div class="card2">
 			<div class="left-menu">
 				<img src="/static/img/my-post-list-icon.png" alt="내가 쓴 글">
-				<a href="">내가 쓴 글</a>
+				<a href="/post/my_post_view">내가 쓴 글</a>
 			</div>
 			<div class="left-menu">
 				<img src="/static/img/my-comment-list-icon.png" alt="댓글 단 댓글">

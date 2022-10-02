@@ -86,4 +86,21 @@
 		WHERE
 			`id` = #{id}
 	</select>
+	
+	<select id="selectPostListByNickname" resultType="com.everytime.post.model.Post">
+		SELECT
+			`id`
+			, `boardId`
+			, `nickname`
+			, `subject`
+			, `content`
+			, `anonymous`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`post`
+		WHERE
+			`nickname` = #{nickname}
+		ORDER BY `id` DESC
+	</select>
 </mapper>

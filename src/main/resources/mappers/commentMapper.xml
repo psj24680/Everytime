@@ -42,4 +42,13 @@
 			`postId` = #{postId}
 		ORDER BY `id` ASC
 	</select>
+	
+	<select id="selectCommentCountByPostId" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			`comment`
+		WHERE
+			`postId` = #{postId}
+	</select>
 </mapper>
