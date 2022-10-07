@@ -48,4 +48,11 @@
 		WHERE
 			`postId` = #{postId}
 	</select>
+	
+	<delete id="deleteLikeByPostId">
+		DELETE
+		FROM `like`
+		WHERE
+			`postId` = #{postId}
+	</delete>
 </mapper>

@@ -55,4 +55,8 @@ public class CommentBO {
 		return commentDAO.selectCommentCountByPostId(postId);
 	}
 	
+	public void deleteCommentByPostId(int postId) {
+		commentDAO.deleteCommentByPostId(postId);
+	}
+	
 }

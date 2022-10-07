@@ -86,7 +86,7 @@
 		WHERE
 			`id` = #{id}
 	</select>
-	
+
 	<select id="selectPostListByNickname" resultType="com.everytime.post.model.Post">
 		SELECT
 			`id`
@@ -103,4 +103,19 @@
 			`nickname` = #{nickname}
 		ORDER BY `id` DESC
 	</select>
+	
+	<delete id="deleteImagePathById">
+		DELETE
+		FROM `image_path`
+		WHERE
+			`postId` = #{id}
+	</delete>
+
+	<delete id="deletePostByIdAndNickname">
+		DELETE
+		FROM `post`
+		WHERE
+			`id` = #{id}
+			AND `nickname` = #{nickname}
+	</delete>
 </mapper>

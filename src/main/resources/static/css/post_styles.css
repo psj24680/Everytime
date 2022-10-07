@@ -32,20 +32,20 @@ article {
 .ps-profile {
 	margin-bottom: 15px;
 	display: flex;
+	justify-content: space-between;
 }
 
 .ps-profile>div {
 	display: flex;
-	flex-direction: column;
 }
 
-.ps-profile>img {
+.ps-profile>div>img {
 	width: 40px;
 	height: 40px;
 	margin-right: 10px;
 }
 
-.ps-profile>div>h3 {
+.ps-profile>div>div>h3 {
 	max-width: 200px;
 	height: 20px;
 	margin: 0;
@@ -54,7 +54,7 @@ article {
 	line-height: 20px;
 }
 
-.ps-profile>div>span {
+.ps-profile>div>div>span {
 	height: 20px;
 	font-size: 12px;
 	color: #a6a6a6;
@@ -177,7 +177,7 @@ article {
 	line-height: 20px;
 }
 
-.ps-comments>div>ul.ps-comments-status {
+ul.ps-comments-status {
 	margin: 0;
 	padding: 0;
 	float: right;
@@ -187,7 +187,7 @@ article {
 	letter-spacing: -0.5px;
 }
 
-.ps-comments>div>ul.ps-comments-status>li {
+ul.ps-comments-status>li {
 	height: 20px;
 	margin-left: 10px;
 	background-repeat: no-repeat;

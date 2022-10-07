@@ -32,4 +32,13 @@ public class CommentCommentBO {
 		return commentCommentDAO.selectCommentCommentCountByPostId(postId);
 	}
 
+	/**
+	 * 글 삭제 시 postId로 글에 저장된 대댓글 삭제하기
+	 * 
+	 * @param postId
+	 */
+	public void deleteCommentCommentByPostId(int postId) {
+		commentCommentDAO.deleteCommentCommentByPostId(postId);
+	}
+
 }

@@ -22,4 +22,6 @@ public interface CommentCommentDAO {
 
 	public int selectCommentCommentCountByPostId(int postId);
 
+	public void deleteCommentCommentByPostId(int postId);
+
 }

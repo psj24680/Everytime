@@ -25,7 +25,7 @@
 			, NOW()
 		)
 	</insert>
-	
+
 	<select id="selectCommentListByPostId" parameterType="int" resultType="com.everytime.comment.model.Comment">
 		SELECT
 			`id`
@@ -42,7 +42,7 @@
 			`postId` = #{postId}
 		ORDER BY `id` ASC
 	</select>
-	
+
 	<select id="selectCommentCountByPostId" resultType="int">
 		SELECT
 			COUNT(*)
@@ -51,4 +51,11 @@
 		WHERE
 			`postId` = #{postId}
 	</select>
+
+	<delete id="deleteCommentByPostId">
+		DELETE
+		FROM `comment`
+		WHERE
+			`postId` = #{postId}
+	</delete>
 </mapper>

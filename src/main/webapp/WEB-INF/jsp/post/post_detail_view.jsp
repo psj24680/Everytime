@@ -7,7 +7,7 @@
 <div class="m-3">
 	<%-- 게시판 제목 --%>
 	<div class="ps-board-title">
-		<a href="#">${board.name}</a>
+		<a href="/board/${board.id}">${board.name}</a>
 	</div>
 
 	<%-- 게시글 --%>
@@ -15,21 +15,27 @@
 		<%-- 게시글 내용 --%>
 		<div class="ps-post">
 			<div class="ps-profile">
-				<img alt="user-icon" src="/static/img/user-icon.png">
-
 				<div>
-					<c:choose>
-						<c:when test="${postView.post.anonymous eq 'O'}">
-							<h3>익명</h3>
-						</c:when>
-						<c:when test="${postView.post.anonymous eq 'X'}">
-							<h3>${postView.post.nickname}</h3>
-						</c:when>
-					</c:choose>
-					<span>
-						<fmt:formatDate value="${postView.post.createdAt}" pattern="MM/dd HH:mm" />
-					</span>
+					<img alt="user-icon" src="/static/img/user-icon.png">
+
+					<div>
+						<c:choose>
+							<c:when test="${postView.post.anonymous eq 'O'}">
+								<h3>익명</h3>
+							</c:when>
+							<c:when test="${postView.post.anonymous eq 'X'}">
+								<h3>${postView.post.nickname}</h3>
+							</c:when>
+						</c:choose>
+						<span>
+							<fmt:formatDate value="${postView.post.createdAt}" pattern="MM/dd HH:mm" />
+						</span>
+					</div>
 				</div>
+				
+				<ul class="ps-comments-status">
+					<li class="post-delete-btn" data-post-id="${postView.post.id}">삭제</li>
+				</ul>
 			</div>
 
 			<c:if test="${board.id eq 1}">
@@ -265,7 +271,6 @@
 				anonymous = "X";
 			}
 
-			// alert("[     대댓글 DB insert     ]" + "\nCommentId: " + commentId + "\nComment-Comment: " + commentComment + "\nComment-Comment Anonymous: " + anonymous);
 			$.ajax({
 				type : "POST",
 				url : "/comment_comment/create",
@@ -288,6 +293,29 @@
 					alert("댓글 저장 중 오류 발생");
 				}
 			})
+		});
+		
+		$('.post-delete-btn').on('click', function() {
+			let postId = $('.post-delete-btn').data('post-id');
+			
+			$.ajax({
+				type : "DELETE",
+				url : "/post/delete",
+				data : {
+					"postId" : postId
+				},
+				success : function(data) {
+					if (data.result == "success") {
+						location.href = "/board/" + ${board.id};
+					} else {
+						alert(data.result);
+						location.href = "/user/sign_in_view";
+					}
+				},
+				error : function(e) {
+					alert("글 삭제 중 오류 발생");
+				}
+			});
 		});
 	});
 </script>
