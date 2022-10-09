@@ -33,9 +33,11 @@
 					</div>
 				</div>
 				
-				<ul class="ps-comments-status">
-					<li class="post-delete-btn" data-post-id="${postView.post.id}">삭제</li>
-				</ul>
+				<c:if test="${postView.post.nickname eq userNickname}">
+					<ul class="ps-comments-status">
+						<li class="post-delete-btn" data-post-id="${postView.post.id}">삭제</li>
+					</ul>
+				</c:if>
 			</div>
 
 			<c:if test="${board.id eq 1}">
@@ -50,12 +52,12 @@
 			<ul class="ps-post-status">
 				<li title="좋아요" class="post-like-count">${postView.likeCount}</li>
 				<li title="댓글" class="post-comment-count">${postView.commentCount}</li>
-				<li title="스크랩" class="post-clipping-count">0</li>
+				<li title="스크랩" class="post-clipping-count">${postView.clippingCount}</li>
 			</ul>
 
 			<div class="ps-post-buttons">
 				<button type="button" class="post-like-btn" data-board-id="${postView.post.boardId}" data-post-id="${postView.post.id}" data-user-id="${userId}">공감</button>
-				<button type="button" class="post-clipping-btn">스크랩</button>
+				<button type="button" class="post-clipping-btn" data-board-id="${postView.post.boardId}" data-post-id="${postView.post.id}" data-user-id="${userId}">스크랩</button>
 			</div>
 		</div>
 
@@ -172,6 +174,31 @@
 				},
 				error : function(e) {
 					alert("좋아요 중 오류 발생");
+				}
+			});
+		});
+		
+		// 스크랩
+		$('.post-clipping-btn').on('click', function() {
+			let boardId = $(this).data('board-id');
+			let postId = $(this).data('post-id');
+			let userId = $(this).data('user-id');
+			
+			$.ajax({
+				type : "POST",
+				url : "/clipping",
+				data : {
+					"boardId" : boardId,
+					"postId" : postId,
+					"userId" : userId
+				},
+				success : function(data) {
+					if (data.result == "success") {
+						location.reload(true);
+					}
+				},
+				error : function(e) {
+					alert("스크랩 중 오류 발생");
 				}
 			});
 		});

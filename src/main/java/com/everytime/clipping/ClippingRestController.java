@@ -1,4 +1,4 @@
-package com.everytime.like;
+package com.everytime.clipping;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,22 +10,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.everytime.like.bo.LikeBO;
+import com.everytime.clipping.bo.ClippingBO;
 
 @RestController
-public class LikeRestController {
+public class ClippingRestController {
 
 	@Autowired
-	private LikeBO likeBO;
+	private ClippingBO clippingBO;
 
-	@RequestMapping("/like")
-	public Map<String, Object> like(
+	@RequestMapping("/clipping")
+	public Map<String, Object> clipping(
 			@RequestParam("boardId") int boardId,
 			@RequestParam("postId") int postId,
 			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
 
-		likeBO.like(boardId, postId, (int) session.getAttribute("userId"));
+		clippingBO.clipping(boardId, postId, (int) session.getAttribute("userId"));
 		result.put("result", "success");
 
 		return result;

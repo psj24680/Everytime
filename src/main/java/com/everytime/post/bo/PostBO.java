@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.everytime.clipping.bo.ClippingBO;
 import com.everytime.comment.bo.CommentBO;
 import com.everytime.comment_comment.bo.CommentCommentBO;
 import com.everytime.common.FileManagerService;
@@ -27,13 +28,16 @@ public class PostBO {
 	private PostDAO postDAO;
 
 	@Autowired
+	private LikeBO likeBO;
+
+	@Autowired
+	private ClippingBO clippingBO;
+
+	@Autowired
 	private CommentBO commentBO;
 
 	@Autowired
 	private CommentCommentBO commentCommentBO;
-
-	@Autowired
-	private LikeBO likeBO;
 
 	@Autowired
 	private FileManagerService fileManager;
@@ -96,12 +100,11 @@ public class PostBO {
 		// 좋아요 개수
 		postView.setLikeCount(likeBO.getLikeCountByPostId(postId));
 
-		// 댓글 개수
-		postView.setCommentCount(commentBO.getCommentCountByPostId(postId) + commentCommentBO.getCommentCommentCountByPostId(postId));
-
-		// 대댓글 개수
-
 		// 스크랩 개수
+		postView.setClippingCount(clippingBO.getClippingCountByPostId(postId));
+
+		// 댓글, 대댓글 개수
+		postView.setCommentCount(commentBO.getCommentCountByPostId(postId) + commentCommentBO.getCommentCommentCountByPostId(postId));
 
 		return postView;
 	}
@@ -124,13 +127,13 @@ public class PostBO {
 
 		// 댓글 삭제
 		commentBO.deleteCommentByPostId(id);
-		
+
 		// 대댓글 삭제
 		commentCommentBO.deleteCommentCommentByPostId(id);
-		
+
 		// 좋아요 삭제
 		likeBO.deleteLikeByPostId(id);
-		
+
 		// 글 삭제
 		return postDAO.deletePostByIdAndNickname(id, nickname);
 	}

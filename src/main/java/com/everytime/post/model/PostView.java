@@ -9,6 +9,7 @@ public class PostView {
 	private String imagePath;
 	private List<CommentView> commentViewList;
 	private int likeCount;
+	private int clippingCount;
 	private int commentCount;
 
 	public Post getPost() {
@@ -41,6 +42,14 @@ public class PostView {
 
 	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
+	}
+
+	public int getClippingCount() {
+		return clippingCount;
+	}
+
+	public void setClippingCount(int clippingCount) {
+		this.clippingCount = clippingCount;
 	}
 
 	public int getCommentCount() {
