@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div>
 	<div class="board-title">
-		<a href="#" onClick="window.location.reload()">내가 쓴 글</a>
+		<a href="#" onClick="window.location.reload()">내 스크랩</a>
 	</div>
 
 	<div class="post">
-		<c:forEach var="post" items="${myPostList}">
+		<c:forEach var="post" items="${myClippingList}">
 			<a href="/board/${post.boardId}/post/${post.id}">
 				<c:choose>
 					<c:when test="${post.boardId eq 1}">

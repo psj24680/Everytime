@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div>
 	<div class="board-title">
-		<a href="#">댓글 단 글</a>
+		<a href="#" onClick="window.location.reload()">댓글 단 글</a>
 	</div>
 
 	<div class="post">

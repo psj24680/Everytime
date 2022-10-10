@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.everytime.clipping.bo.ClippingBO;
+import com.everytime.clipping.model.Clipping;
 import com.everytime.comment.bo.CommentBO;
 import com.everytime.comment.model.Comment;
 import com.everytime.comment_comment.bo.CommentCommentBO;
@@ -33,6 +35,9 @@ public class PostController {
 
 	@Autowired
 	private CommentCommentBO commentCommentBO;
+
+	@Autowired
+	private ClippingBO clippingBO;
 
 	/**
 	 * 내가 쓴 글 화면
@@ -79,7 +84,7 @@ public class PostController {
 		List<Integer> postIdList = new ArrayList<>(postIdHashSet);
 		Collections.sort(postIdList, Collections.reverseOrder());
 
-		// postIdList에 저장된 postId로 PostList 만들기
+		// postIdList에 저장된 postId로 List 만들기
 		Iterator<Integer> iter = postIdList.iterator();
 		while (iter.hasNext()) {
 			myCommentPostList.add(postBO.getPostById(iter.next()));
@@ -90,4 +95,38 @@ public class PostController {
 
 		return "template/layout";
 	}
+
+	/**
+	 * 내 스크랩 화면
+	 * 
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/my_clipping_view")
+	public String myClippingView(HttpSession session, Model model) {
+		List<Integer> postIdList = new ArrayList<>();
+		List<Post> myClippingList = new ArrayList<>();
+
+		// 로그인 시 세션에 저장된 userId로 clipping 테이블에서 postId 불러오기
+		List<Clipping> clippingList = clippingBO.getClippingByUserId((int) session.getAttribute("userId"));
+		for (Clipping clipping : clippingList) {
+			postIdList.add(clipping.getPostId());
+		}
+
+		// postId 내림차순 정렬
+		Collections.sort(postIdList, Collections.reverseOrder());
+
+		// postIdList에 저장된 postId로 List 만들기
+		Iterator<Integer> iter = postIdList.iterator();
+		while (iter.hasNext()) {
+			myClippingList.add(postBO.getPostById(iter.next()));
+		}
+
+		model.addAttribute("myClippingList", myClippingList);
+		model.addAttribute("viewName", "post/my_clipping_view");
+
+		return "template/layout";
+	}
+
 }

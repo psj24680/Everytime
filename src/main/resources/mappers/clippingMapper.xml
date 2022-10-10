@@ -48,4 +48,16 @@
 		WHERE
 			`postId` = #{postId}
 	</select>
+
+	<select id="selectClippingByUserId" resultType="com.everytime.clipping.model.Clipping">
+		SELECT
+			`boardId`
+			, `postId`
+			, `userId`
+			, `createdAt`
+		FROM
+			`clipping`
+		WHERE
+			`userId` = #{userId}
+	</select>
 </mapper>

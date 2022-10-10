@@ -39,7 +39,7 @@
 			</div>
 			<div class="left-menu">
 				<img src="/static/img/my-clipping-list-icon.png" alt="내 스크랩">
-				<a href="">내 스크랩</a>
+				<a href="/post/my_clipping_view">내 스크랩</a>
 			</div>
 		</div>
 
