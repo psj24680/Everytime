@@ -35,7 +35,7 @@
 			</div>
 			<div class="left-menu">
 				<img src="/static/img/my-comment-list-icon.png" alt="댓글 단 댓글">
-				<a href="">댓글 단 글</a>
+				<a href="/post/my_comment_view">댓글 단 글</a>
 			</div>
 			<div class="left-menu">
 				<img src="/static/img/my-clipping-list-icon.png" alt="내 스크랩">

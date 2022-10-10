@@ -54,9 +54,13 @@ public class CommentBO {
 	public int getCommentCountByPostId(int postId) {
 		return commentDAO.selectCommentCountByPostId(postId);
 	}
-	
+
 	public void deleteCommentByPostId(int postId) {
 		commentDAO.deleteCommentByPostId(postId);
 	}
-	
+
+	public List<Comment> getCommentListByNickname(String nickname) {
+		return commentDAO.selectCommentListByNickname(nickname);
+	}
+
 }

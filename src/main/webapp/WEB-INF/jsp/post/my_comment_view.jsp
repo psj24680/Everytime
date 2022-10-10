@@ -4,11 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div>
 	<div class="board-title">
-		<a href="#">내가 쓴 글</a>
+		<a href="#">댓글 단 글</a>
 	</div>
 
 	<div class="post">
-		<c:forEach var="post" items="${myPostList}">
+		<c:forEach var="post" items="${myCommentPostList}">
 			<a href="/board/${post.boardId}/post/${post.id}">
 				<c:choose>
 					<c:when test="${post.boardId eq 1}">

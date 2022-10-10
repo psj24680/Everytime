@@ -32,7 +32,7 @@
 						</span>
 					</div>
 				</div>
-				
+
 				<c:if test="${postView.post.nickname eq userNickname}">
 					<ul class="ps-comments-status">
 						<li class="post-delete-btn" data-post-id="${postView.post.id}">삭제</li>
@@ -44,7 +44,7 @@
 				<h2>${postView.post.subject}</h2>
 			</c:if>
 			<p class="test">${fn:replace(postView.post.content, replaceChar, "<br>")}</p>
-			
+
 			<c:if test="${not empty postView.imagePath}">
 				<img alt="uploaded-image" src="${postView.imagePath}" class="uploaded-image">
 			</c:if>
@@ -63,81 +63,81 @@
 
 		<%-- 댓글 --%>
 		<c:forEach var="commentView" items="${postView.commentViewList}">
-		<div class="test">
-			<div class="ps-comments">
-				<div>
-					<div class="ps-comments-profile">
-						<img alt="user-icon" src="/static/img/user-icon.png">
-	
-						<c:choose>
-							<c:when test="${commentView.comment.anonymous eq 'O'}">
-								<c:choose>
-									<c:when test="${commentView.comment.nickname eq postView.post.nickname}">
-										<h3 class="writer">익명(글쓴이)</h3>
-									</c:when>
-									<c:otherwise>
-										<h3>익명</h3>
-									</c:otherwise>
-								</c:choose>
-							</c:when>
-							<c:when test="${commentView.comment.anonymous eq 'X'}">
-								<h3>${commentView.comment.nickname}</h3>
-							</c:when>
-						</c:choose>
-					</div>
-	
-					<ul class="ps-comments-status">
-						<li class="comment-comment-btn">대댓글</li>
-						<li class="comment-delete-btn">삭제</li>
-					</ul>
-				</div>
-				<p>${commentView.comment.content}</p>
-				<span>
-					<fmt:formatDate value="${commentView.comment.createdAt}" pattern="MM/dd HH:mm" />
-				</span>
-			</div>
-	
-			<%-- 대댓글 --%>
-			<c:forEach var="commentComment" items="${commentView.comment_comment}">
-				<div class="ps-comment-comment">
+			<div class="test">
+				<div class="ps-comments">
 					<div>
-						<img alt="user-icon" src="/static/img/user-icon.png">
-		
-						<c:choose>
-							<c:when test="${commentComment.anonymous eq 'O'}">
-								<c:choose>
-									<c:when test="${commentComment.nickname eq postView.post.nickname}">
-										<h3 class="writer">익명(글쓴이)</h3>
-									</c:when>
-									<c:otherwise>
-										<h3>익명</h3>
-									</c:otherwise>
-								</c:choose>
-							</c:when>
-							<c:when test="${commentComment.anonymous eq 'X'}">
-								<h3>${commentComment.nickname}</h3>
-							</c:when>
-						</c:choose>
+						<div class="ps-comments-profile">
+							<img alt="user-icon" src="/static/img/user-icon.png">
+
+							<c:choose>
+								<c:when test="${commentView.comment.anonymous eq 'O'}">
+									<c:choose>
+										<c:when test="${commentView.comment.nickname eq postView.post.nickname}">
+											<h3 class="writer">익명(글쓴이)</h3>
+										</c:when>
+										<c:otherwise>
+											<h3>익명</h3>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+								<c:when test="${commentView.comment.anonymous eq 'X'}">
+									<h3>${commentView.comment.nickname}</h3>
+								</c:when>
+							</c:choose>
+						</div>
+
+						<ul class="ps-comments-status">
+							<li class="comment-comment-btn">대댓글</li>
+							<li class="comment-delete-btn">삭제</li>
+						</ul>
 					</div>
-					<p>${commentComment.content}</p>
+					<p>${commentView.comment.content}</p>
 					<span>
-						<fmt:formatDate value="${commentComment.createdAt}" pattern="MM/dd HH:mm" />
+						<fmt:formatDate value="${commentView.comment.createdAt}" pattern="MM/dd HH:mm" />
 					</span>
 				</div>
-			</c:forEach>
-			
-			<%-- 대댓글 입력창 --%>
-			<div class="ps-comment-comment-write d-none">
-				<input type="text" id="commentComment" name="commentComment" maxlength="300" autocomplete="off" placeholder="대댓글을 입력하세요.">
-	
-				<ul class="option">
-					<li title="익명" class="comment-comment-anonymous"></li>
-					<li title="완료" class="comment-comment-save" data-comment-id="${commentView.comment.id}"></li>
-				</ul>
-			</div>
+
+				<%-- 대댓글 --%>
+				<c:forEach var="commentComment" items="${commentView.comment_comment}">
+					<div class="ps-comment-comment">
+						<div>
+							<img alt="user-icon" src="/static/img/user-icon.png">
+
+							<c:choose>
+								<c:when test="${commentComment.anonymous eq 'O'}">
+									<c:choose>
+										<c:when test="${commentComment.nickname eq postView.post.nickname}">
+											<h3 class="writer">익명(글쓴이)</h3>
+										</c:when>
+										<c:otherwise>
+											<h3>익명</h3>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+								<c:when test="${commentComment.anonymous eq 'X'}">
+									<h3>${commentComment.nickname}</h3>
+								</c:when>
+							</c:choose>
+						</div>
+						<p>${commentComment.content}</p>
+						<span>
+							<fmt:formatDate value="${commentComment.createdAt}" pattern="MM/dd HH:mm" />
+						</span>
+					</div>
+				</c:forEach>
+
+				<%-- 대댓글 입력창 --%>
+				<div class="ps-comment-comment-write d-none">
+					<input type="text" id="commentComment" name="commentComment" maxlength="300" autocomplete="off" placeholder="대댓글을 입력하세요.">
+
+					<ul class="option">
+						<li title="익명" class="comment-comment-anonymous"></li>
+						<li title="완료" class="comment-comment-save" data-comment-id="${commentView.comment.id}"></li>
+					</ul>
+				</div>
 			</div>
 		</c:forEach>
-		
+
 
 		<%-- 댓글 입력창 --%>
 		<div class="ps-comment-write">
@@ -158,7 +158,7 @@
 			let boardId = $(this).data('board-id');
 			let postId = $(this).data('post-id');
 			let userId = $(this).data('user-id');
-			
+
 			$.ajax({
 				type : "POST",
 				url : "/like",
@@ -177,13 +177,13 @@
 				}
 			});
 		});
-		
+
 		// 스크랩
 		$('.post-clipping-btn').on('click', function() {
 			let boardId = $(this).data('board-id');
 			let postId = $(this).data('post-id');
 			let userId = $(this).data('user-id');
-			
+
 			$.ajax({
 				type : "POST",
 				url : "/clipping",
@@ -202,7 +202,7 @@
 				}
 			});
 		});
-		
+
 		// 댓글 익명
 		$('.comment-anonymous').on('click', function() {
 			if ($('.comment-anonymous').hasClass('active')) {
@@ -321,10 +321,10 @@
 				}
 			})
 		});
-		
+
 		$('.post-delete-btn').on('click', function() {
 			let postId = $('.post-delete-btn').data('post-id');
-			
+
 			$.ajax({
 				type : "DELETE",
 				url : "/post/delete",

@@ -58,4 +58,20 @@
 		WHERE
 			`postId` = #{postId}
 	</delete>
+
+	<select id="selectCommentListByNickname" resultType="com.everytime.comment.model.Comment">
+		SELECT
+			`id`
+			, `boardId`
+			, `postId`
+			, `nickname`
+			, `content`
+			, `anonymous`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`comment`
+		WHERE
+			`nickname` = #{nickname}
+	</select>
 </mapper>

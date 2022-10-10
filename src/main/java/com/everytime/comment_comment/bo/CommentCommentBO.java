@@ -41,4 +41,8 @@ public class CommentCommentBO {
 		commentCommentDAO.deleteCommentCommentByPostId(postId);
 	}
 
+	public List<CommentComment> getCommentCommentListByNickname(String nickname) {
+		return commentCommentDAO.selectCommentCommentListByNickname(nickname);
+	}
+
 }
