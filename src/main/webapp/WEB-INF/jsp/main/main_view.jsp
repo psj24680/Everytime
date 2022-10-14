@@ -22,7 +22,7 @@
 					<p class="school">${userSchoolId}</p>
 
 					<div>
-						<a href="#" class="my-page">내 정보</a>
+						<a href="/user/my_page_view" class="my-page">내 정보</a>
 						<a href="/user/sign_out" class="sign-out">로그아웃</a>
 					</div>
 				</div>

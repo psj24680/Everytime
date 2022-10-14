@@ -1,9 +1,14 @@
 package com.everytime.post.bo;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.everytime.clipping.bo.ClippingBO;
+import com.everytime.clipping.model.Clipping;
 import com.everytime.comment.bo.CommentBO;
+import com.everytime.comment.model.Comment;
 import com.everytime.comment_comment.bo.CommentCommentBO;
+import com.everytime.comment_comment.model.CommentComment;
 import com.everytime.common.FileManagerService;
 import com.everytime.like.bo.LikeBO;
 import com.everytime.post.dao.PostDAO;
@@ -113,6 +121,13 @@ public class PostBO {
 		return postDAO.selectPostListByNickname(nickname);
 	}
 
+	/**
+	 * postId, nickname으로 게시글 삭제하기
+	 * 
+	 * @param id
+	 * @param nickname
+	 * @return
+	 */
 	public int deletePostByIdAndNickname(int id, String nickname) {
 		// 이미지 삭제
 		String imagePath = postDAO.selectImagePathById(id);
@@ -134,8 +149,72 @@ public class PostBO {
 		// 좋아요 삭제
 		likeBO.deleteLikeByPostId(id);
 
+		// 스크랩 삭제
+
 		// 글 삭제
 		return postDAO.deletePostByIdAndNickname(id, nickname);
 	}
 
+	/**
+	 * nickname으로 댓글 단 글 목록 불러오기
+	 * 
+	 * @param nickname
+	 * @return
+	 */
+	public List<Post> generateMyCommentViewPostListByNickname(String nickname) {
+		Set<Integer> postIdHashSet = new HashSet<>();
+		List<Post> myCommentPostList = new ArrayList<>();
+
+		// 본인이 달았던 댓글들 불러오기
+		List<Comment> commentList = commentBO.getCommentListByNickname(nickname);
+		for (Comment comment : commentList) {
+			postIdHashSet.add(comment.getPostId());
+		}
+
+		// 본인이 달았던 대댓글들 불러오기
+		List<CommentComment> commentCommentList = commentCommentBO.getCommentCommentListByNickname(nickname);
+		for (CommentComment commentComment : commentCommentList) {
+			postIdHashSet.add(commentComment.getPostId());
+		}
+
+		// postId 내림차순 정렬 - HashSet을 List로 변환 후 변환
+		List<Integer> postIdList = new ArrayList<>(postIdHashSet);
+		Collections.sort(postIdList, Collections.reverseOrder());
+
+		// postIdList에 저장된 postId로 List 만들기
+		Iterator<Integer> iter = postIdList.iterator();
+		while (iter.hasNext()) {
+			myCommentPostList.add(getPostById(iter.next()));
+		}
+
+		return myCommentPostList;
+	}
+
+	/**
+	 * userId로 내 스크랩 목록 불러오기
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public List<Post> generateMyClippingViewPostListByUserId(int userId) {
+		List<Integer> postIdList = new ArrayList<>();
+		List<Post> myClippingList = new ArrayList<>();
+
+		// 로그인 시 세션에 저장된 userId로 clipping 테이블에서 postId 불러오기
+		List<Clipping> clippingList = clippingBO.getClippingByUserId(userId);
+		for (Clipping clipping : clippingList) {
+			postIdList.add(clipping.getPostId());
+		}
+
+		// postId 내림차순 정렬
+		Collections.sort(postIdList, Collections.reverseOrder());
+
+		// postIdList에 저장된 postId로 List 만들기
+		Iterator<Integer> iter = postIdList.iterator();
+		while (iter.hasNext()) {
+			myClippingList.add(getPostById(iter.next()));
+		}
+
+		return myClippingList;
+	}
 }

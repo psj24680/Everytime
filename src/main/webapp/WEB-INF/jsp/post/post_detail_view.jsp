@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <% pageContext.setAttribute("replaceChar", "\n"); %>
-<div class="m-3">
+<div>
 	<%-- 게시판 제목 --%>
 	<div class="ps-board-title">
 		<a href="/board/${board.id}">${board.name}</a>
