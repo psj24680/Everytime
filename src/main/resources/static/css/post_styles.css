@@ -374,3 +374,20 @@ ul.ps-comments-status>li {
 .writer {
 	color: #0ca5af;
 }
+
+.my-password {
+	display: block;
+	height: 25px;
+	border: 1px solid #d6d6d6;
+	border-radius: 3px;
+	font-size: 13px;
+	color: #737373;
+	line-height: 25px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.my-password:hover {
+	color: #737373;
+	text-decoration: none;
+}

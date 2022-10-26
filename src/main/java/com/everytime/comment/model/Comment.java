@@ -9,6 +9,7 @@ public class Comment {
 	private String nickname;
 	private String content;
 	private String anonymous;
+	private int isDeleted;
 	private Date createdAt;
 	private Date updatedAt;
 
@@ -58,6 +59,14 @@ public class Comment {
 
 	public void setAnonymous(String anonymous) {
 		this.anonymous = anonymous;
+	}
+
+	public int getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(int isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	public Date getCreatedAt() {

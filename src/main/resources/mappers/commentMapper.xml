@@ -11,6 +11,7 @@
 			, `nickname`
 			, `content`
 			, `anonymous`
+			, `isDeleted`
 			, `createdAt`
 			, `updatedAt`
 		)
@@ -21,6 +22,7 @@
 			, #{nickname}
 			, #{content}
 			, #{anonymous}
+			, false
 			, NOW()
 			, NOW()
 		)
@@ -34,6 +36,7 @@
 			, `nickname`
 			, `content`
 			, `anonymous`
+			, `isDeleted`
 			, `createdAt`
 			, `updatedAt`
 		FROM
@@ -67,6 +70,7 @@
 			, `nickname`
 			, `content`
 			, `anonymous`
+			, `isDeleted`
 			, `createdAt`
 			, `updatedAt`
 		FROM
@@ -74,4 +78,12 @@
 		WHERE
 			`nickname` = #{nickname}
 	</select>
+
+	<update id="deleteCommentById">
+		UPDATE `comment`
+		SET
+			`isDeleted` = true
+		WHERE
+			`id` = #{commentId}
+	</update>
 </mapper>

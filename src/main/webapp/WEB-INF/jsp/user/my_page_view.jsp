@@ -16,7 +16,7 @@
 	        <tr>
 	            <td>Password</td>
 	            <td>
-	            	<button class="btn btn-success">변경</button>
+	            	<a href="#" class="my-password">변경</a>
 	            </td>
 	        </tr>
 	        <tr>
@@ -41,11 +41,7 @@
 	        </tr>
 	        <tr>
 	            <td>학교 메일</td>
-	            <td>
-	            	<c:if test="${empty user.schoolEmail}">
-	            		학교 인증을 해주세요.
-	            	</c:if>
-	            </td>
+	            <td>${user.schoolEmail}</td>
 	        </tr>
 	    </tbody>
 	</table>

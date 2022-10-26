@@ -70,30 +70,47 @@
 							<img alt="user-icon" src="/static/img/user-icon.png">
 
 							<c:choose>
-								<c:when test="${commentView.comment.anonymous eq 'O'}">
-									<c:choose>
-										<c:when test="${commentView.comment.nickname eq postView.post.nickname}">
-											<h3 class="writer">익명(글쓴이)</h3>
-										</c:when>
-										<c:otherwise>
-											<h3>익명</h3>
-										</c:otherwise>
-									</c:choose>
+								<c:when test="${commentView.comment.isDeleted eq 1}">
+									<h3 style="color: #a6a6a6">(삭제)</h3>
 								</c:when>
-								<c:when test="${commentView.comment.anonymous eq 'X'}">
-									<h3>${commentView.comment.nickname}</h3>
-								</c:when>
+									<c:when test="${commentView.comment.anonymous eq 'O'}">
+										<%-- 댓글 작성자 여부 확인 --%>
+										<c:choose>
+											<c:when test="${commentView.comment.nickname eq postView.post.nickname}">
+												<h3 class="writer">익명(글쓴이)</h3>
+											</c:when>
+											<c:otherwise>
+												<h3>익명</h3>
+											</c:otherwise>
+										</c:choose>
+									</c:when>
+									<c:when test="${commentView.comment.anonymous eq 'X'}">
+										<h3>${commentView.comment.nickname}</h3>
+									</c:when>
 							</c:choose>
 						</div>
 
-						<ul class="ps-comments-status">
-							<li class="comment-comment-btn">대댓글</li>
-							<li class="comment-delete-btn">삭제</li>
-						</ul>
+						<c:if test="${commentView.comment.isDeleted ne 1}">
+							<ul class="ps-comments-status">
+								<li class="comment-comment-btn">대댓글</li>
+								<c:if test="${userNickname eq commentView.comment.nickname}">
+									<li class="comment-delete-btn" data-comment-id="${commentView.comment.id}">삭제</li>
+								</c:if>
+							</ul>
+						</c:if>
 					</div>
-					<p>${commentView.comment.content}</p>
+					<c:choose>
+						<c:when test="${commentView.comment.isDeleted eq 1}">
+							<p>삭제된 댓글입니다.</p>
+						</c:when>
+						<c:otherwise>
+							<p>${commentView.comment.content}</p>
+						</c:otherwise>
+					</c:choose>
 					<span>
-						<fmt:formatDate value="${commentView.comment.createdAt}" pattern="MM/dd HH:mm" />
+						<c:if test="${commentView.comment.isDeleted ne 1}">
+							<fmt:formatDate value="${commentView.comment.createdAt}" pattern="MM/dd HH:mm" />
+						</c:if>
 					</span>
 				</div>
 
@@ -322,6 +339,7 @@
 			})
 		});
 
+		// 글 삭제
 		$('.post-delete-btn').on('click', function() {
 			let postId = $('.post-delete-btn').data('post-id');
 
@@ -341,6 +359,29 @@
 				},
 				error : function(e) {
 					alert("글 삭제 중 오류 발생");
+				}
+			});
+		});		
+
+		// 댓글 삭제
+		$('.comment-delete-btn').on('click', function() {
+			let commentId = $('.comment-delete-btn').data('comment-id');
+
+			$.ajax({
+				type : "DELETE",
+				url : "/comment/delete",
+				data : {
+					"commentId" : commentId
+				},
+				success : function(data) {
+					if (data.result == "success") {
+						location.reload(true);
+					} else {
+						alert(data.result);
+					}
+				},
+				error : function(e) {
+					alert("댓글 삭제 중 오류 발생");
 				}
 			});
 		});
