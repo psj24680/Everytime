@@ -48,7 +48,12 @@
 		<div class="left-ad-card"></div>
 	</div>
 	<div class="main">
-		<div class="banner"></div>
+		<div class="banner">
+			<%-- TODO: 새 창으로 띄우기 --%>
+			<a href="https://nid.naver.com/membership/join?m=joinStudent&evt=MK1013&pcode=targetmedia_everytime_homebanner_cu">
+				<img alt="광고" src="/static/img/everytime_ad.jpg" style="width: 100%">
+			</a>
+		</div>
 
 		<div class="board-box flex-wrap">
 			<c:forEach var="board" items="${boardList}">
