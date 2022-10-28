@@ -50,7 +50,8 @@ public class PostBO {
 	@Autowired
 	private FileManagerService fileManager;
 
-	public int addPost(int boardId, String nickname, String subject, String content, String anonymous, String userLoginId, MultipartFile file) {
+	public int addPost(int boardId, String nickname, String subject, String content, String anonymous,
+			String userLoginId, MultipartFile file) {
 		Map<String, Object> postMap = new HashMap<>();
 		postMap.put("boardId", boardId);
 		postMap.put("nickname", nickname);
@@ -74,6 +75,10 @@ public class PostBO {
 
 	public List<Post> getPostListByBoardId(int boardId) {
 		return postDAO.selectPostListByBoardId(boardId);
+	}
+
+	public List<Post> getRecentPostListByBoardId(int boardId) {
+		return postDAO.selectRecentPostListByBoardId(boardId);
 	}
 
 	public Post getPostById(int id) {
@@ -112,7 +117,8 @@ public class PostBO {
 		postView.setClippingCount(clippingBO.getClippingCountByPostId(postId));
 
 		// 댓글, 대댓글 개수
-		postView.setCommentCount(commentBO.getCommentCountByPostId(postId) + commentCommentBO.getCommentCommentCountByPostId(postId));
+		postView.setCommentCount(
+				commentBO.getCommentCountByPostId(postId) + commentCommentBO.getCommentCommentCountByPostId(postId));
 
 		return postView;
 	}

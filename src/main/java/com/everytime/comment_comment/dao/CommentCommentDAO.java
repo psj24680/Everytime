@@ -26,4 +26,6 @@ public interface CommentCommentDAO {
 
 	public List<CommentComment> selectCommentCommentListByNickname(String nickname);
 
+	public int deleteCommentCommentById(int commentCommentId);
+
 }

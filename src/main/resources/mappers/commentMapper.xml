@@ -53,6 +53,7 @@
 			`comment`
 		WHERE
 			`postId` = #{postId}
+			AND `isDeleted` = 0
 	</select>
 
 	<delete id="deleteCommentByPostId">

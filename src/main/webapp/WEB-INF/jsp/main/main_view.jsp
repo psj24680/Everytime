@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div class="d-flex">
 	<div class="left-side bg-light">
 		<c:choose>
@@ -49,39 +50,46 @@
 	</div>
 	<div class="main">
 		<div class="banner">
-			<%-- TODO: 새 창으로 띄우기 --%>
-			<a href="https://nid.naver.com/membership/join?m=joinStudent&evt=MK1013&pcode=targetmedia_everytime_homebanner_cu">
+			<a href="https://nid.naver.com/membership/join?m=joinStudent&evt=MK1013&pcode=targetmedia_everytime_homebanner_cu" target="_blank">
 				<img alt="광고" src="/static/img/everytime_ad.jpg" style="width: 100%">
 			</a>
 		</div>
 
 		<div class="board-box flex-wrap">
-			<c:forEach var="board" items="${boardList}">
+			<c:forEach var="maps" items="${boardMap}">
 				<div class="board-card">
 					<h3>
-						<a href="/board/${board.id}">${board.name}</a>
+						<a href="/board/${maps.value.board.id}">${maps.key}</a>
 					</h3>
-					<c:choose>
-						<c:when test="${board.id eq 1}">
-							<a>
-								<p>test</p>
-								<small>time</small>
-							</a>
-							<a>
-								<p>test</p>
-								<small>time</small>
-							</a>
-							<a>
-								<p>test</p>
-								<small>time</small>
-							</a>
-							<a>
-								<p>test</p>
-								<small>time</small>
-							</a>
-						</c:when>
-					</c:choose>
+					
+					<c:forEach var="post" items="${maps.value.recentPostList}">
+						<c:choose>
+							<c:when test="${maps.key eq '자유게시판'}">
+								<a href="/board/${post.boardId}/post/${post.id}">
+									<p>${post.subject}</p>
+									<small><fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" /></small>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="/board/${post.boardId}/post/${post.id}">
+									<p>${post.content}</p>
+									<small><fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" /></small>
+								</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
 				</div>
+				
+				<%-- <br>
+				maps의 key: ${maps.key}
+				<br>
+				
+				maps의 value: <br>
+				<c:forEach var="post" items="${maps.value}">
+					${post.subject}
+				</c:forEach>
+				
+				<br> --%>
 			</c:forEach>
 		</div>
 	</div>

@@ -1,6 +1,8 @@
 package com.everytime.main;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.everytime.board.bo.BoardBO;
 import com.everytime.board.model.Board;
+import com.everytime.main.model.MainView;
+import com.everytime.post.bo.PostBO;
 import com.everytime.user.bo.UserBO;
 
 @Controller
@@ -23,6 +27,9 @@ public class MainController {
 	@Autowired
 	private BoardBO boardBO;
 
+	@Autowired
+	private PostBO postBO;
+
 	/**
 	 * 메인 화면
 	 * 
@@ -31,17 +38,24 @@ public class MainController {
 	 * @return
 	 */
 	@RequestMapping("/main_view")
-	public String mainView(Model model, HttpSession session) {
-		// 유저 학교 불러오기
+	public String mainView(
+			Model model,
+			HttpSession session) {
+		// 유저 정보 불러오기
 		int userId = (int) session.getAttribute("userId");
 		model.addAttribute("user", userBO.getUserById(userId));
 
-		// 게시판 불러오기
-		List<Board> boardList = boardBO.getBoardList();
-		model.addAttribute("boardList", boardList);
-
 		// 최근 게시글 불러오기
+		Map<String, Object> boardMap = new LinkedHashMap<>();
+		List<Board> boardList = boardBO.getBoardList();
+		for (Board board : boardList) {
+			MainView mainView = new MainView();
+			mainView.setBoard(board);
+			mainView.setRecentPostList(postBO.getRecentPostListByBoardId(board.getId()));
+			boardMap.put(board.getName(), mainView);
+		}
 
+		model.addAttribute("boardMap", boardMap);
 		model.addAttribute("viewName", "main/main_view");
 
 		return "template/layout";

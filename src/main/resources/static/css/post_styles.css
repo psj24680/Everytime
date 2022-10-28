@@ -157,18 +157,18 @@ article {
 	justify-content: space-between;
 }
 
-.ps-comments>div>div {
+.ps-comments-profile {
 	display: flex;
 }
 
-.ps-comments>div>div>img {
+.ps-comments-profile>img {
 	width: 20px;
 	height: 20px;
 	border-radius: 4px;
 	margin-right: 5px;
 }
 
-.ps-comments>div>div>h3 {
+.ps-comments-profile>h3 {
 	max-width: 90px;
 	margin: 0;
 	height: 20px;
@@ -228,16 +228,21 @@ ul.ps-comments-status>li {
 
 .ps-comment-comment>div {
 	display: flex;
+	justify-content: space-between;
 }
 
-.ps-comment-comment>div>img {
+.ps-comment-comment-profile {
+	display: flex;
+}
+
+.ps-comment-comment-profile>img {
 	width: 20px;
 	height: 20px;
 	border-radius: 4px;
 	margin-right: 5px;
 }
 
-.ps-comment-comment>div>h3 {
+.ps-comment-comment-profile>h3 {
 	max-width: 90px;
 	height: 20px;
 	margin: 0;

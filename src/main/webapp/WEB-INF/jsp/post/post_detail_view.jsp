@@ -63,7 +63,7 @@
 
 		<%-- 댓글 --%>
 		<c:forEach var="commentView" items="${postView.commentViewList}">
-			<div class="test">
+			<div>
 				<div class="ps-comments">
 					<div>
 						<div class="ps-comments-profile">
@@ -73,20 +73,24 @@
 								<c:when test="${commentView.comment.isDeleted eq 1}">
 									<h3 style="color: #a6a6a6">(삭제)</h3>
 								</c:when>
-									<c:when test="${commentView.comment.anonymous eq 'O'}">
-										<%-- 댓글 작성자 여부 확인 --%>
-										<c:choose>
-											<c:when test="${commentView.comment.nickname eq postView.post.nickname}">
-												<h3 class="writer">익명(글쓴이)</h3>
-											</c:when>
-											<c:otherwise>
-												<h3>익명</h3>
-											</c:otherwise>
-										</c:choose>
-									</c:when>
-									<c:when test="${commentView.comment.anonymous eq 'X'}">
-										<h3>${commentView.comment.nickname}</h3>
-									</c:when>
+								
+								<%-- 익명 댓글 --%>
+								<c:when test="${commentView.comment.anonymous eq 'O'}">
+									<%-- 작성자 여부 확인 --%>
+									<c:choose>
+										<c:when test="${commentView.comment.nickname eq postView.post.nickname}">
+											<h3 class="writer">익명(글쓴이)</h3>
+										</c:when>
+										<c:otherwise>
+											<h3>익명</h3>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+								
+								<%-- 비익명 댓글 --%>
+								<c:when test="${commentView.comment.anonymous eq 'X'}">
+									<h3>${commentView.comment.nickname}</h3>
+								</c:when>
 							</c:choose>
 						</div>
 
@@ -99,6 +103,8 @@
 							</ul>
 						</c:if>
 					</div>
+					
+					<%-- 댓글 내용 --%>
 					<c:choose>
 						<c:when test="${commentView.comment.isDeleted eq 1}">
 							<p>삭제된 댓글입니다.</p>
@@ -107,6 +113,8 @@
 							<p>${commentView.comment.content}</p>
 						</c:otherwise>
 					</c:choose>
+					
+					<%-- 댓글 작성일 --%>
 					<span>
 						<c:if test="${commentView.comment.isDeleted ne 1}">
 							<fmt:formatDate value="${commentView.comment.createdAt}" pattern="MM/dd HH:mm" />
@@ -118,23 +126,31 @@
 				<c:forEach var="commentComment" items="${commentView.comment_comment}">
 					<div class="ps-comment-comment">
 						<div>
-							<img alt="user-icon" src="/static/img/user-icon.png">
-
-							<c:choose>
-								<c:when test="${commentComment.anonymous eq 'O'}">
-									<c:choose>
-										<c:when test="${commentComment.nickname eq postView.post.nickname}">
-											<h3 class="writer">익명(글쓴이)</h3>
-										</c:when>
-										<c:otherwise>
-											<h3>익명</h3>
-										</c:otherwise>
-									</c:choose>
-								</c:when>
-								<c:when test="${commentComment.anonymous eq 'X'}">
-									<h3>${commentComment.nickname}</h3>
-								</c:when>
-							</c:choose>
+							<div class="ps-comment-comment-profile">
+								<img alt="user-icon" src="/static/img/user-icon.png">
+	
+								<c:choose>
+									<c:when test="${commentComment.anonymous eq 'O'}">
+										<c:choose>
+											<c:when test="${commentComment.nickname eq postView.post.nickname}">
+												<h3 class="writer">익명(글쓴이)</h3>
+											</c:when>
+											<c:otherwise>
+												<h3>익명</h3>
+											</c:otherwise>
+										</c:choose>
+									</c:when>
+									<c:when test="${commentComment.anonymous eq 'X'}">
+										<h3>${commentComment.nickname}</h3>
+									</c:when>
+								</c:choose>
+							</div>
+							
+							<ul class="ps-comments-status">
+								<c:if test="${userNickname eq commentComment.nickname}">
+									<li class="commentComment-delete-btn" data-comment-comment-id="${commentComment.id}">삭제</li>
+								</c:if>
+							</ul>
 						</div>
 						<p>${commentComment.content}</p>
 						<span>
@@ -382,6 +398,30 @@
 				},
 				error : function(e) {
 					alert("댓글 삭제 중 오류 발생");
+				}
+			});
+		});
+		
+		// 대댓글 삭제
+		$('.commentComment-delete-btn').on('click', function() {
+			let commentCommentId = $('.commentComment-delete-btn').data('comment-comment-id');
+
+			// alert('commentCommentId: ' + commentCommentId);
+			$.ajax({
+				type : "DELETE",
+				url : "/comment_comment/delete",
+				data : {
+					"commentCommentId" : commentCommentId
+				},
+				success : function(data) {
+					if (data.result == "success") {
+						location.reload(true);
+					} else {
+						alert(data.result);
+					}
+				},
+				error : function(e) {
+					alert("대댓글 삭제 중 오류 발생");
 				}
 			});
 		});

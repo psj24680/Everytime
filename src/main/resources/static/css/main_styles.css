@@ -222,6 +222,7 @@
 	color: #a6a6a6;
 	font-size: 11px;
 	letter-spacing: 0;
+	white-space: nowrap;
 }
 
 .right-side {

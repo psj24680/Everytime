@@ -45,4 +45,8 @@ public class CommentCommentBO {
 		return commentCommentDAO.selectCommentCommentListByNickname(nickname);
 	}
 
+	public int deleteCommentCommentById(int commentCommentId) {
+		return commentCommentDAO.deleteCommentCommentById(commentCommentId);
+	}
+
 }

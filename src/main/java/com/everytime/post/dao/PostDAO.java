@@ -19,12 +19,14 @@ public interface PostDAO {
 
 	public List<Post> selectPostListByBoardId(int boardId);
 
+	public List<Post> selectRecentPostListByBoardId(int boardId);
+
 	public Post selectPostById(int id);
 
 	public List<Post> selectPostListByNickname(String nickname);
 
 	public void deleteImagePathById(int id);
-	
+
 	public int deletePostByIdAndNickname(@Param("id") int id, @Param("nickname") String nickname);
 
 }

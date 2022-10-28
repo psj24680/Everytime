@@ -78,4 +78,11 @@
 		WHERE
 			`nickname` = #{nickname}
 	</select>
+
+	<delete id="deleteCommentCommentById">
+		DELETE
+		FROM `comment_comment`
+		WHERE
+			`id` = #{commentCommentId}
+	</delete>
 </mapper>

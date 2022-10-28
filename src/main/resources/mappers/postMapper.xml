@@ -71,6 +71,24 @@
 		ORDER BY `id` DESC
 	</select>
 
+	<select id="selectRecentPostListByBoardId" resultType="com.everytime.post.model.Post">
+		SELECT
+			`id`
+			, `boardId`
+			, `nickname`
+			, `subject`
+			, `content`
+			, `anonymous`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`post`
+		WHERE
+			`boardId` = #{boardId}
+		ORDER BY `id` DESC
+		LIMIT 0, 4
+	</select>
+
 	<select id="selectPostById" resultType="com.everytime.post.model.Post">
 		SELECT
 			`id`
