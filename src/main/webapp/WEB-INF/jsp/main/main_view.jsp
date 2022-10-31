@@ -94,5 +94,5 @@
 			</c:forEach>
 		</div>
 	</div>
-	<div class="right-side"></div>
+	<div class="right-side d-none"></div>
 </div>

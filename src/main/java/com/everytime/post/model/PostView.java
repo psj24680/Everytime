@@ -6,7 +6,7 @@ import com.everytime.comment.model.CommentView;
 
 public class PostView {
 	private Post post;
-	private String imagePath;
+	private List<String> imagePath;
 	private List<CommentView> commentViewList;
 	private int likeCount;
 	private int clippingCount;
@@ -20,11 +20,11 @@ public class PostView {
 		this.post = post;
 	}
 
-	public String getImagePath() {
+	public List<String> getImagePath() {
 		return imagePath;
 	}
 
-	public void setImagePath(String imagePath) {
+	public void setImagePath(List<String> imagePath) {
 		this.imagePath = imagePath;
 	}
 

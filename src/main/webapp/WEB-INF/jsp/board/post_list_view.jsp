@@ -45,7 +45,7 @@
 					<li title="완료" class="save" data-board-id="${boardId}"></li>
 					<li title="익명" class="anonymous"></li>
 				</ul>
-				<input type="file" id="file" class="d-non" accept=".jpg,.jpeg,.png,.gif" multiple="multiple">
+				<input type="file" id="uploadFile" class="d-none" accept=".jpg,.jpeg,.png,.gif" multiple="multiple">
 			</div>
 		</div>
 
@@ -104,25 +104,24 @@
 	$(document).ready(function() {
 		// 파일 업로드 버튼 클릭
 		$('.attach').on('click', function() {
-			$('#file').val('');
+			$('#uploadFile').val('');
 			$('.file-name').text('');
 			$('.file-name').addClass('d-none');
-			$('#file').click();
+			$('#uploadFile').click();
 		});
-
+		
 		// 파일 업로드를 했을 때 확장자 이름 노출, 파일 확장자 검증
-		$('#file').on('change', function(e) {
-			
+		$('#uploadFile').on('change', function(e) {
 			if (e.target.files.length > 1) { // 여러 장 선택 시
 				let arr = [];
 				for (var i = 0; i < e.target.files.length; i++) {
 					// 확장자 검증
 					arr.push(e.target.files[i].name.split("."));
 					if (arr[i][1] != 'jpg' && arr[i][1] != 'jpeg' && arr[i][1] != 'png' && arr[i][1] != 'gif') {
-						alert("이미지 파일만 업로드 할 수 있습니다.");
+						alert("이미지 파일만 업로드 할 수 있습니다. 다시 선택해주세요.");
 						
-						$(this).val("");
-						$('.file-name').text("");
+						$(this).val('');
+						$('.file-name').text('');
 						$('.file-name').addClass('d-none');
 						return;
 					}
@@ -134,7 +133,7 @@
 				let arr = e.target.files[0].name.split('.');
 				
 				if (arr[arr.length - 1] != 'jpg' && arr[arr.length - 1] != 'jpeg' && arr[arr.length - 1] != 'png' && arr[arr.length - 1] != 'gif') {
-					alert("이미지 파일만 업로드 할 수 있습니다.");
+					alert("이미지 파일만 업로드 할 수 있습니다. 다시 선택해주세요.");
 					
 					$(this).val('');
 					$('.file-name').text('');
@@ -149,8 +148,8 @@
 		
 		// 파일 업로드 취소
 		$('.file-name').on('click', function() {
-			$('#file').val("");
-			$('.file-name').text("");
+			$('#uploadFile').val('');
+			$('.file-name').text('');
 			$('.file-name').addClass('d-none');
 		});
 
@@ -171,14 +170,14 @@
 			let boardId = $(this).data('board-id');
 
 			let subject = null;
-			if ($('#subject').val() != null) {
-				subject = $('#subject').val().trim();
-			}
 			if (boardId == 1) {
 				if (subject == "") {
 					alert("제목을 입력하세요.");
 					return;
 				}
+			}
+			if ($('#subject').val() != null) {
+				subject = $('#subject').val().trim();
 			}
 
 			let content = $('#content').val();
@@ -193,6 +192,9 @@
 			} else {
 				anonymous = "X";
 			}
+			
+			/* console.log($('#uploadFile').get(0).files);
+			alert($('#uploadFile').get(0).files); */
 
 			// form태그 생성
 			let formData = new FormData();
@@ -200,18 +202,20 @@
 			formData.append("subject", subject);
 			formData.append("content", content);
 			formData.append("anonymous", anonymous);
-			formData.append("file", $('#file').files);
-
-			alert('file:' + $('#file').files);
+			if ($('#uploadFile').get(0).files != null) {
+				for (var i = 0; i < $('#uploadFile').get(0).files.length; i++) {
+					formData.append("images", $('#uploadFile').get(0).files[i]);
+				}
+			}
 			
 			// AJAX - DB insert
-			/* $.ajax({
+			$.ajax({
 				type : "POST",
 				url : "/post/create",
 				data : formData,
-				encType : "multipart/form-data",
 				processData : false,
 				contentType : false,
+				enctype: 'multipart/form-data',
 				success : function(data) {
 					if (data.result == "success") {
 						location.reload(true);
@@ -222,7 +226,7 @@
 				error : function(e) {
 					alert("글 저장 중 오류 발생");
 				}
-			}); */
+			});
 		});
 	});
 </script>

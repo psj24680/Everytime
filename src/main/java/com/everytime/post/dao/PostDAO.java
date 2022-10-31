@@ -13,9 +13,9 @@ public interface PostDAO {
 
 	public int insertPost(Map<String, Object> postMap);
 
-	public int insertImagePath(Map<String, Object> postMap);
+	public int insertImagePath(Map<String, Object> imagePathMap);
 
-	public String selectImagePathById(int id);
+	public List<String> selectImagePathListById(int id);
 
 	public List<Post> selectPostListByBoardId(int boardId);
 

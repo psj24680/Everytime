@@ -45,9 +45,13 @@
 			</c:if>
 			<p class="test">${fn:replace(postView.post.content, replaceChar, "<br>")}</p>
 
-			<c:if test="${not empty postView.imagePath}">
-				<img alt="uploaded-image" src="${postView.imagePath}" class="uploaded-image">
-			</c:if>
+			<div class="ps-image">
+				<c:if test="${not empty postView.imagePath}">
+					<c:forEach var="imagePath" items="${postView.imagePath}">
+						<img alt="uploaded-image" src="${imagePath}" class="uploaded-image">
+					</c:forEach>
+				</c:if>
+			</div>
 
 			<ul class="ps-post-status">
 				<li title="좋아요" class="post-like-count">${postView.likeCount}</li>

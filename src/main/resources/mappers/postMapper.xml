@@ -36,16 +36,18 @@
 			, `updatedAt`
 		)
 		VALUES
-		(
+		<foreach collection="imagePathList" item="item" separator=",">
+        (
 			#{boardId}
 			, #{id}
-			, #{imagePath}
+			, #{item}
 			, NOW()
 			, NOW()
-		)
+        )
+        </foreach>
 	</insert>
 
-	<select id="selectImagePathById" resultType="String">
+	<select id="selectImagePathListById" resultType="String">
 		SELECT
 			`imagePath`
 		FROM

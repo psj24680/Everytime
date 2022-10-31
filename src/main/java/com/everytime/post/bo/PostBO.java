@@ -50,8 +50,7 @@ public class PostBO {
 	@Autowired
 	private FileManagerService fileManager;
 
-	public int addPost(int boardId, String nickname, String subject, String content, String anonymous,
-			String userLoginId, MultipartFile file) {
+	public int addPost(int boardId, String nickname, String subject, String content, String anonymous, String userLoginId, List<MultipartFile> files) {
 		Map<String, Object> postMap = new HashMap<>();
 		postMap.put("boardId", boardId);
 		postMap.put("nickname", nickname);
@@ -59,18 +58,25 @@ public class PostBO {
 		postMap.put("content", content);
 		postMap.put("anonymous", anonymous);
 
-		// 이미지 파일이 있을 때
-		if (file != null) {
-			String imagePath = fileManager.saveFile(userLoginId, file);
-
-			postMap.put("imagePath", imagePath);
-
-			postDAO.insertPost(postMap);
-
+		// 이미지 파일 O
+		if (files != null) {
+			List<String> imagePathList = new ArrayList<>();
+			
+			for (MultipartFile file : files) {
+				String imagePath = fileManager.saveFile(userLoginId, file);
+				imagePathList.add(imagePath);
+			}
+			postMap.put("imagePathList", imagePathList);
+			
+			// postId 구하기
+			postDAO.insertPost(postMap); // DB에 insert를 하면서 id가 채워진 상황
+			
+			// 이미지 경로 DB에 저장하면서 결과 return
 			return postDAO.insertImagePath(postMap);
-		} else {
-			return postDAO.insertPost(postMap);
 		}
+		
+		// 이미지 파일 X
+		return postDAO.insertPost(postMap);
 	}
 
 	public List<Post> getPostListByBoardId(int boardId) {
@@ -85,8 +91,8 @@ public class PostBO {
 		return postDAO.selectPostById(id);
 	}
 
-	public String getImagePathById(int id) {
-		return postDAO.selectImagePathById(id);
+	public List<String> getImagePathListById(int id) {
+		return postDAO.selectImagePathListById(id);
 	}
 
 	/**
@@ -105,7 +111,7 @@ public class PostBO {
 		postView.setPost(post);
 
 		// 이미지
-		postView.setImagePath(getImagePathById(postId));
+		postView.setImagePath(getImagePathListById(postId));
 
 		// 댓글 정보
 		postView.setCommentViewList(commentBO.generateCommentViewListByPostId(postId));
@@ -136,11 +142,13 @@ public class PostBO {
 	 */
 	public int deletePostByIdAndNickname(int id, String nickname) {
 		// 이미지 삭제
-		String imagePath = postDAO.selectImagePathById(id);
-		if (imagePath != null) {
+		List<String> imagePathList = postDAO.selectImagePathListById(id);
+		if (imagePathList != null) {
 			try {
-				fileManager.deleteFile(imagePath);
-				postDAO.deleteImagePathById(id);
+				for (String imagePath : imagePathList) {
+					fileManager.deleteFile(imagePath);
+					postDAO.deleteImagePathById(id);
+				}
 			} catch (IOException e) {
 				logger.error("[DELETE POST] 이미지 삭제 실패. postId: {}", id);
 			}

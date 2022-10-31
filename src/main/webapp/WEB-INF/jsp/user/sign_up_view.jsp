@@ -20,6 +20,12 @@
 <link rel="stylesheet" href="/static/css/login_styles.css">
 </head>
 <body>
+	<div id="display" style="float: right">
+		<!-- 결과가 출력될 곳 -->
+		<div id="result"></div>
+		<iframe class="d-none" src="https://www.career.go.kr/cnet/openapi/getOpenApi?apiKey=4b18c9c07295ede3beb8730178d80acc&svcType=api&svcCode=SCHOOL&contentType=json&gubun=univ_list&perPage=1000" scrolling="yes" name="ce" width="100%" height="1080" frameborder="0" style="border-width:0px; border-color:white; border-style:solid;"></iframe>
+	</div>
+	
 	<div id="wrap">
 		<div class="sign-up">
 			<div>
@@ -134,6 +140,27 @@
 					},
 					error : function(e) {
 						alert("회원가입 중 오류 발생");
+					}
+				});
+			});
+			
+			$('#school').on('click', function(e) {
+				$.ajax({
+					method: "get",
+				    url: "https://www.career.go.kr/cnet/openapi/getOpenApi.json?apiKey=4b18c9c07295ede3beb8730178d80acc",
+				    data: {
+				    	"svcType" : "api",
+				    	"svcCode" : "SCHOOL",
+				    	"contentType" : "json",
+				    	"gubun" : "univ_list",
+				    	"perPage" : "1000",
+				    }
+				}).done(function(msg) {
+					// console.log(msg.dataSearch.content[0].schoolName);
+					alert(msg.dataSearch.content.length);
+					
+					for (var i = 0; i < msg.dataSearch.content.length; i++) {
+						$("#result").append("<a href='#' class='test'>" + msg.dataSearch.content[i].schoolName + " / " + msg.dataSearch.content[i].campusName + "</a><br>");
 					}
 				});
 			});
