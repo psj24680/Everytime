@@ -45,7 +45,7 @@
 					<li title="완료" class="save" data-board-id="${boardId}"></li>
 					<li title="익명" class="anonymous"></li>
 				</ul>
-				<input type="file" id="file" class="d-none" accept=".jpg,.jpeg,.png,.gif">
+				<input type="file" id="file" class="d-non" accept=".jpg,.jpeg,.png,.gif" multiple="multiple">
 			</div>
 		</div>
 
@@ -104,29 +104,54 @@
 	$(document).ready(function() {
 		// 파일 업로드 버튼 클릭
 		$('.attach').on('click', function() {
+			$('#file').val('');
+			$('.file-name').text('');
+			$('.file-name').addClass('d-none');
 			$('#file').click();
 		});
 
 		// 파일 업로드를 했을 때 확장자 이름 노출, 파일 확장자 검증
 		$('#file').on('change', function(e) {
-			let fileName = e.target.files[0].name; // ex) test-image.jpg
-			let arr = fileName.split(".");
-
-			// 확장자 검증
-			if (arr.length < 2
-					|| (arr[arr.length - 1] != 'jpg'
-							&& arr[arr.length - 1] != 'jpeg'
-							&& arr[arr.length - 1] != 'png'
-							&& arr[arr.length - 1] != 'gif')) {
-				alert("이미지 파일만 업로드 할 수 있습니다.");
-				$(this).val("");
-				$('.file-name').text("");
-				return;
+			
+			if (e.target.files.length > 1) { // 여러 장 선택 시
+				let arr = [];
+				for (var i = 0; i < e.target.files.length; i++) {
+					// 확장자 검증
+					arr.push(e.target.files[i].name.split("."));
+					if (arr[i][1] != 'jpg' && arr[i][1] != 'jpeg' && arr[i][1] != 'png' && arr[i][1] != 'gif') {
+						alert("이미지 파일만 업로드 할 수 있습니다.");
+						
+						$(this).val("");
+						$('.file-name').text("");
+						$('.file-name').addClass('d-none');
+						return;
+					}
+					
+					$('.file-name').removeClass('d-none');
+					$('.file-name').append(e.target.files[i].name + " / ");
+				}
+			} else { // 한 장 선택 시
+				let arr = e.target.files[0].name.split('.');
+				
+				if (arr[arr.length - 1] != 'jpg' && arr[arr.length - 1] != 'jpeg' && arr[arr.length - 1] != 'png' && arr[arr.length - 1] != 'gif') {
+					alert("이미지 파일만 업로드 할 수 있습니다.");
+					
+					$(this).val('');
+					$('.file-name').text('');
+					$('.file-name').addClass('d-none');
+					return;
+				}
+				
+				$('.file-name').removeClass('d-none');
+				$('.file-name').append(arr[0]);
 			}
-
-			// 임시 파일명 노출
-			$('.file-name').removeClass('d-none');
-			$('.file-name').text(fileName);
+		});
+		
+		// 파일 업로드 취소
+		$('.file-name').on('click', function() {
+			$('#file').val("");
+			$('.file-name').text("");
+			$('.file-name').addClass('d-none');
 		});
 
 		// 익명 체크 여부
@@ -149,10 +174,17 @@
 			if ($('#subject').val() != null) {
 				subject = $('#subject').val().trim();
 			}
+			if (boardId == 1) {
+				if (subject == "") {
+					alert("제목을 입력하세요.");
+					return;
+				}
+			}
 
 			let content = $('#content').val();
 			if (content == "") {
 				alert("내용을 입력하세요.");
+				return;
 			}
 
 			let anonymous = null;
@@ -168,10 +200,12 @@
 			formData.append("subject", subject);
 			formData.append("content", content);
 			formData.append("anonymous", anonymous);
-			formData.append("file", $('#file')[0].files[0]);
+			formData.append("file", $('#file').files);
 
+			alert('file:' + $('#file').files);
+			
 			// AJAX - DB insert
-			$.ajax({
+			/* $.ajax({
 				type : "POST",
 				url : "/post/create",
 				data : formData,
@@ -188,7 +222,7 @@
 				error : function(e) {
 					alert("글 저장 중 오류 발생");
 				}
-			});
+			}); */
 		});
 	});
 </script>

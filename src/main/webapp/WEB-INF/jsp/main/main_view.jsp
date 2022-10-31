@@ -44,9 +44,21 @@
 			</div>
 		</div>
 
-		<div class="left-ad-card"></div>
-		<div class="left-ad-card"></div>
-		<div class="left-ad-card"></div>
+		<div class="left-ad-card">
+			<a href="https://event.multicampus.com/bigdatafullstack/#utm_source=everytime&utm_medium=display&utm_campaign=multi_fullstack&utm_content=221031&utm_term=10_fullstack" target="_blank">
+				<img alt="광고" src="/static/img/everytime_left-side_ad_1.jpg" style="width: 100%">
+			</a>
+		</div>
+		<div class="left-ad-card">
+			<a href="https://www.aice.team/" target="_blank">
+				<img alt="광고" src="/static/img/everytime_left-side_ad_2.jpg" style="width: 100%">
+			</a>
+		</div>
+		<div class="left-ad-card">
+			<a href="https://www.campushow.com/?utm_source=everytime&utm_medium=homecard220920&utm_campaign=vl_2022" target="_blank">
+				<img alt="광고" src="/static/img/everytime_left-side_ad_3.png" style="width: 100%">
+			</a>
+		</div>
 	</div>
 	<div class="main">
 		<div class="banner">
@@ -79,17 +91,6 @@
 						</c:choose>
 					</c:forEach>
 				</div>
-				
-				<%-- <br>
-				maps의 key: ${maps.key}
-				<br>
-				
-				maps의 value: <br>
-				<c:forEach var="post" items="${maps.value}">
-					${post.subject}
-				</c:forEach>
-				
-				<br> --%>
 			</c:forEach>
 		</div>
 	</div>

@@ -1,6 +1,7 @@
 package com.everytime.post;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -27,23 +28,28 @@ public class PostRestController {
 			@RequestParam(value = "subject", required = false) String subject,
 			@RequestParam("content") String content,
 			@RequestParam("anonymous") String anonymous,
-			@RequestParam(value = "file", required = false) MultipartFile file,
+			@RequestParam(value = "file", required = false) List<MultipartFile> files,
 			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
 		String userLoginId = null;
 
 		// 이미지가 있으면 폴더명을 만들기 위한 userLoginId를 구한다.
-		if (file != null) {
+		if (files != null) {
 			userLoginId = (String) session.getAttribute("userLoginId");
+		}
+		
+		// 이미지 개수 체크
+		if (files.size() > 1) {
+			System.out.println("true");
 		}
 
 		// DB insert
-		int row = postBO.addPost(boardId, (String) session.getAttribute("userNickname"), subject, content, anonymous, userLoginId, file);
-		if (row == 1) {
-			result.put("result", "success");
-		} else {
-			result.put("result", "글 저장을 실패했습니다. 다시 입력해주세요.");
-		}
+		/*
+		 * int row = postBO.addPost(boardId, (String)
+		 * session.getAttribute("userNickname"), subject, content, anonymous,
+		 * userLoginId, file); if (row == 1) { result.put("result", "success"); } else {
+		 * result.put("result", "글 저장을 실패했습니다. 다시 입력해주세요."); }
+		 */
 
 		return result;
 	}
