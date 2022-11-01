@@ -25,4 +25,14 @@ public interface UserDAO {
 			@Param("password") String password);
 
 	public User selectUserById(int id);
+
+	public int checkPw(
+			@Param("loginId") String loginId,
+			@Param("password") String password);
+
+	public int updatePasswordByLoginIdAndPassword(
+			@Param("loginId") String loginId,
+			@Param("currentPassword") String currentPassword,
+			@Param("password") String password);
+
 }

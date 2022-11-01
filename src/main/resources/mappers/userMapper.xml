@@ -65,7 +65,7 @@
 			`loginId` = #{loginId}
 			AND `password` = #{password}
 	</select>
-	
+
 	<select id="selectUserById" resultType="com.everytime.user.model.User">
 		SELECT
 			`id`
@@ -84,4 +84,23 @@
 		WHERE
 			`id` = #{id}
 	</select>
+
+	<select id="checkPw" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			`user`
+		WHERE
+			`loginId` = #{loginId}
+			AND password = #{password}
+	</select>
+
+	<update id="updatePasswordByLoginIdAndPassword">
+		UPDATE `user`
+		SET
+			`password` = #{password}
+		WHERE
+			`loginId` = #{loginId}
+			AND `password` = #{currentPassword}
+	</update>
 </mapper>

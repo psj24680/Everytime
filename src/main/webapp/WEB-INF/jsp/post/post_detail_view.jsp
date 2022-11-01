@@ -35,7 +35,7 @@
 
 				<c:if test="${postView.post.nickname eq userNickname}">
 					<ul class="ps-comments-status">
-						<li class="post-delete-btn" data-post-id="${postView.post.id}">삭제</li>
+						<li class="post-delete-btn" data-board-id="${board.id}" data-post-id="${postView.post.id}">삭제</li>
 					</ul>
 				</c:if>
 			</div>
@@ -48,7 +48,14 @@
 			<div class="ps-image">
 				<c:if test="${not empty postView.imagePath}">
 					<c:forEach var="imagePath" items="${postView.imagePath}">
-						<img alt="uploaded-image" src="${imagePath}" class="uploaded-image">
+						<img alt="uploaded-image" src="${imagePath}" class="uploaded-image" data-toggle="modal" data-target="#modal" data-image-path="${imagePath}">
+						<script>
+							// 이미지 경로 가져와서 modal창으로 보내기
+							$('.uploaded-image').on('click', function() {
+								let imagePath = $(this).data('image-path');
+								$('.full-image').attr('src', imagePath);
+							});
+						</script>
 					</c:forEach>
 				</c:if>
 			</div>
@@ -77,7 +84,7 @@
 								<c:when test="${commentView.comment.isDeleted eq 1}">
 									<h3 style="color: #a6a6a6">(삭제)</h3>
 								</c:when>
-								
+
 								<%-- 익명 댓글 --%>
 								<c:when test="${commentView.comment.anonymous eq 'O'}">
 									<%-- 작성자 여부 확인 --%>
@@ -90,7 +97,7 @@
 										</c:otherwise>
 									</c:choose>
 								</c:when>
-								
+
 								<%-- 비익명 댓글 --%>
 								<c:when test="${commentView.comment.anonymous eq 'X'}">
 									<h3>${commentView.comment.nickname}</h3>
@@ -107,7 +114,7 @@
 							</ul>
 						</c:if>
 					</div>
-					
+
 					<%-- 댓글 내용 --%>
 					<c:choose>
 						<c:when test="${commentView.comment.isDeleted eq 1}">
@@ -117,7 +124,7 @@
 							<p>${commentView.comment.content}</p>
 						</c:otherwise>
 					</c:choose>
-					
+
 					<%-- 댓글 작성일 --%>
 					<span>
 						<c:if test="${commentView.comment.isDeleted ne 1}">
@@ -132,7 +139,7 @@
 						<div>
 							<div class="ps-comment-comment-profile">
 								<img alt="user-icon" src="/static/img/user-icon.png">
-	
+
 								<c:choose>
 									<c:when test="${commentComment.anonymous eq 'O'}">
 										<c:choose>
@@ -149,7 +156,7 @@
 									</c:when>
 								</c:choose>
 							</div>
-							
+
 							<ul class="ps-comments-status">
 								<c:if test="${userNickname eq commentComment.nickname}">
 									<li class="commentComment-delete-btn" data-comment-comment-id="${commentComment.id}">삭제</li>
@@ -169,7 +176,7 @@
 
 					<ul class="option">
 						<li title="익명" class="comment-comment-anonymous"></li>
-						<li title="완료" class="comment-comment-save" data-comment-id="${commentView.comment.id}"></li>
+						<li title="완료" class="comment-comment-save" data-board-id="${commentView.comment.boardId}" data-post-id="${commentView.comment.postId}" data-comment-id="${commentView.comment.id}"></li>
 					</ul>
 				</div>
 			</div>
@@ -182,10 +189,24 @@
 
 			<ul class="option">
 				<li title="익명" class="comment-anonymous"></li>
-				<li title="완료" class="comment-save"></li>
+				<li title="완료" class="comment-save" data-board-id="${boardId}" data-post-id="${postView.post.id}"></li>
 			</ul>
 		</div>
 	</article>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content">
+			<div class="text-center" data-dismiss="modal">
+				<img alt="full-size-uploaded-image" src="" class="full-image w-100">
+				<div class="py-3">
+					<a href="#">취소</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
@@ -240,7 +261,7 @@
 			});
 		});
 
-		// 댓글 익명
+		// 댓글 익명 여부
 		$('.comment-anonymous').on('click', function() {
 			if ($('.comment-anonymous').hasClass('active')) {
 				$('.comment-anonymous').removeClass('active');
@@ -251,7 +272,6 @@
 
 		// 댓글 저장
 		$('.comment-save').on('click', function(e) {
-			// 창이 올라가는 것을 방지
 			e.preventDefault();
 
 			// validation
@@ -268,8 +288,8 @@
 				anonymous = "X";
 			}
 
-			let boardId = ${boardId};
-			let postId = ${postView.post.id};
+			let boardId = $(this).data('board-id');
+			let postId = $(this).data('post-id');
 
 			$.ajax({
 				type : "POST",
@@ -294,7 +314,7 @@
 			})
 		});
 
-		// 대댓글 버튼 클릭
+		// 대댓글 입력창 띄우기
 		$('.comment-comment-btn').on('click', function() {
 			if ($(this).parent().parent().parent().nextAll('.ps-comment-comment-write').hasClass('d-none')) {
 				$(this).parent().parent().parent().nextAll('.ps-comment-comment-write').removeClass('d-none');
@@ -303,7 +323,7 @@
 			}
 		});
 
-		// 대댓글 익명
+		// 대댓글 익명 여부
 		$('.comment-comment-anonymous').on('click', function() {
 			if ($('.comment-comment-anonymous').hasClass('active')) {
 				$('.comment-comment-anonymous').removeClass('active');
@@ -314,12 +334,11 @@
 
 		// 대댓글 저장
 		$('.comment-comment-save').on('click', function(e) {
-			// 창이 올라가는 것을 방지
 			e.preventDefault();
 
 			// validation
-			let boardId = ${boardId};
-			let postId = ${postView.post.id};
+			let boardId = $(this).data('board-id')
+			let postId = $(this).data('post-id');
 			let commentId = $(this).data('comment-id');
 
 			let commentComment = $(this).parent().parent().find('#commentComment').val();
@@ -361,6 +380,7 @@
 
 		// 글 삭제
 		$('.post-delete-btn').on('click', function() {
+			let boardId = $(this).data('board-id');
 			let postId = $('.post-delete-btn').data('post-id');
 
 			$.ajax({
@@ -371,7 +391,7 @@
 				},
 				success : function(data) {
 					if (data.result == "success") {
-						location.href = "/board/" + ${board.id};
+						location.href = "/board/" + boardId;
 					} else {
 						alert(data.result);
 						location.href = "/user/sign_in_view";
@@ -381,7 +401,7 @@
 					alert("글 삭제 중 오류 발생");
 				}
 			});
-		});		
+		});
 
 		// 댓글 삭제
 		$('.comment-delete-btn').on('click', function() {
@@ -405,12 +425,11 @@
 				}
 			});
 		});
-		
+
 		// 대댓글 삭제
 		$('.commentComment-delete-btn').on('click', function() {
 			let commentCommentId = $('.commentComment-delete-btn').data('comment-comment-id');
 
-			// alert('commentCommentId: ' + commentCommentId);
 			$.ajax({
 				type : "DELETE",
 				url : "/comment_comment/delete",

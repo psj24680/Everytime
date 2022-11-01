@@ -27,8 +27,16 @@ public class UserBO {
 	public User getUserByLoginIdAndPassword(String loginId, String password) {
 		return userDAO.selectUserByLoginIdAndPassword(loginId, password);
 	}
-	
+
 	public User getUserById(int id) {
 		return userDAO.selectUserById(id);
+	}
+
+	public int checkPw(String loginId, String password) {
+		return userDAO.checkPw(loginId, password);
+	}
+
+	public int updatePasswordByLoginIdAndPassword(String loginId, String currentPassword, String password) {
+		return userDAO.updatePasswordByLoginIdAndPassword(loginId, currentPassword, password);
 	}
 }

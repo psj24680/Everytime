@@ -30,7 +30,8 @@
 				<span>로그인 정보 입력</span>
 				<input type="text" id="loginId" maxlength="20" placeholder="아이디 - 영문/숫자 4~20자">
 				<input type="password" id="password" maxlength="20" placeholder="비밀번호 - 영문/특문/숫자 2종류 이상 8~20자">
-				<input type="password" id="confirmPassword" maxlength="20" placeholder="비밀번호 확인"> <input type="text" id="email" placeholder="이메일">
+				<input type="password" id="confirmPassword" maxlength="20" placeholder="비밀번호 확인">
+				<input type="text" id="email" placeholder="이메일">
 			</div>
 
 			<div>
@@ -109,7 +110,7 @@
 
 				let school = $('#school').val().trim();
 				if (school == "") {
-					alert("학교를 입력하세요.");
+					alert("학교를 선택하세요.");
 					return;
 				}
 
@@ -146,11 +147,11 @@
 				});
 			});
 			
-			$('#school').on('click', function(e) {
+			$('#school').on('focus', function(e) {
 				$.ajax({
 					method: "get",
-				    url: "https://www.career.go.kr/cnet/openapi/getOpenApi.json?apiKey=4b18c9c07295ede3beb8730178d80acc",
-				    data: {
+					url: "https://www.career.go.kr/cnet/openapi/getOpenApi.json?apiKey=4b18c9c07295ede3beb8730178d80acc",
+					data: {
 				    	"svcType" : "api",
 				    	"svcCode" : "SCHOOL",
 				    	"contentType" : "json",
@@ -161,7 +162,7 @@
 						console.log('data: ' + data);
 						console.log('data.length: ' + data.dataSearch.content.length);
 						
-						for (var i = 0; i < data.dataSearch.content.length; i++) {
+						for (let i = 0; i < data.dataSearch.content.length; i++) {
 							if (data.dataSearch.content[i].campusName == '본교') {
 								$('.campusList').append("<a href='#' class='school-name-btn' data-school-name='" 
 										+ data.dataSearch.content[i].schoolName 
@@ -173,22 +174,20 @@
 							}
 						}
 						
+						// 동적으로 엘리먼트를 생성하는데 ajax 밖에 따로 코드를 두면 자스가 불러올 때는 없는 엘리먼트라 찾지를 못함.
+						$('.school-name-btn').on('click', function(e) {
+							e.preventDefault();
+							
+							let schoolName = $(this).data('school-name');
+							$('#school').val(schoolName);
+						});
+						
 						$('.campusList').removeClass('d-none');
 					},
 					error : function(e) {
 						alert("데이터 불러오기 중 오류 발생");
 					}
 				});
-			});
-			
-			$('.school-name-btn').on('click', function(e) {
-				e.preventDefault();
-				
-				alert('test');
-				
-				let schoolName = $(this).data('school-name');
-				
-				alert(schoolName);
 			});
 		});
 	</script>
