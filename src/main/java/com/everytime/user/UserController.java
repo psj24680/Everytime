@@ -7,16 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.everytime.common.APIRestController;
 import com.everytime.user.bo.UserBO;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-	@Autowired
-	private APIRestController callAPI;
-	
 	@Autowired
 	private UserBO userBO;
 
@@ -37,8 +33,6 @@ public class UserController {
 	 */
 	@RequestMapping("/sign_up_view")
 	public String signUpView() {
-		callAPI.callAPI();
-		
 		return "user/sign_up_view";
 	}
 
