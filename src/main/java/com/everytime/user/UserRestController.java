@@ -107,6 +107,14 @@ public class UserRestController {
 		return result;
 	}
 
+	/**
+	 * 비밀번호 변경
+	 * 
+	 * @param currentPassword
+	 * @param password
+	 * @param session
+	 * @return
+	 */
 	@PostMapping("/update_password")
 	public Map<String, Object> updatePassword(
 			@RequestParam("currentPassword") String currentPassword,
@@ -130,6 +138,9 @@ public class UserRestController {
 			// 기존 비밀번호가 일치함, update
 			int updateRow = userBO.updatePasswordByLoginIdAndPassword(userLoginId, encryptCurrentPassword, encryptPassword);
 			if (updateRow == 1) {
+				session.removeAttribute("userId");
+				session.removeAttribute("userLoginId");
+
 				result.put("result", "success");
 			} else {
 				result.put("result", "비밀번호 변경을 실패했습니다. 다시 입력해주세요.");
