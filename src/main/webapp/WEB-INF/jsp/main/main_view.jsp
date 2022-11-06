@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div class="d-flex">
@@ -8,13 +7,17 @@
 			<c:when test="${empty userId}">
 				<!-- 로그인 상태만 접근 가능 -->
 				<div class="logged-in">
-					<span> 커뮤니티 이용을 위해<br> <strong>로그인</strong>이 필요합니다.</span>
+					<span>
+						커뮤니티 이용을 위해
+						<br>
+						<strong>로그인</strong>
+						이 필요합니다.
+					</span>
 					<a href="/user/sign_in_view" class="btn sign-in-btn">로그인</a>
 					<a href="/user/sign_up_view" class="btn sign-up-btn">회원가입</a>
 				</div>
 			</c:when>
-			<c:when test="${not empty userId}">
-				<!-- 로그아웃 상태 -->
+			<c:otherwise>
 				<div class="logged-out">
 					<img src="/static/img/user-icon.png" alt="유저">
 
@@ -27,7 +30,7 @@
 						<a href="/user/sign_out" class="sign-out">로그아웃</a>
 					</div>
 				</div>
-			</c:when>
+			</c:otherwise>
 		</c:choose>
 		<div class="card2">
 			<div class="left-menu">
@@ -73,19 +76,23 @@
 					<h3>
 						<a href="/board/${maps.value.board.id}">${maps.key}</a>
 					</h3>
-					
+
 					<c:forEach var="post" items="${maps.value.recentPostList}">
 						<c:choose>
 							<c:when test="${maps.key eq '자유게시판'}">
 								<a href="/board/${post.boardId}/post/${post.id}">
 									<p>${post.subject}</p>
-									<small><fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" /></small>
+									<small>
+										<fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" />
+									</small>
 								</a>
 							</c:when>
 							<c:otherwise>
 								<a href="/board/${post.boardId}/post/${post.id}">
 									<p>${post.content}</p>
-									<small><fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" /></small>
+									<small>
+										<fmt:formatDate value="${post.createdAt}" pattern="MM/dd HH:mm" />
+									</small>
 								</a>
 							</c:otherwise>
 						</c:choose>

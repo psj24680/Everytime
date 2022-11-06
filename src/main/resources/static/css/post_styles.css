@@ -76,7 +76,7 @@ article {
 
 .ps-image {
 	display: flex;
-	overflow: scroll;
+	overflow: auto;
 }
 
 .uploaded-image {

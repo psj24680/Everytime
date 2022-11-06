@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="col-4">
 	<table class="table table-striped table-bordered my-info-table">
@@ -100,7 +99,7 @@
 				alert("비밀번호는 영문, 숫자, 특문이 2개 이상 조합된 8~20자를 입력하세요.");
 				return;
 			}
-			
+
 			// AJAX - 기존 비밀번호 일치 확인
 			$.ajax({
 				type : "POST",

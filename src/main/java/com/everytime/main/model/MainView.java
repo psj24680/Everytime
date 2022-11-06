@@ -6,22 +6,22 @@ import com.everytime.board.model.Board;
 import com.everytime.post.model.Post;
 
 public class MainView {
-	private Board board;
-	private List<Post> recentPostList;
+  private Board board;
+  private List<Post> recentPostList;
 
-	public Board getBoard() {
-		return board;
-	}
+  public Board getBoard() {
+    return board;
+  }
 
-	public void setBoard(Board board) {
-		this.board = board;
-	}
+  public void setBoard(Board board) {
+    this.board = board;
+  }
 
-	public List<Post> getRecentPostList() {
-		return recentPostList;
-	}
+  public List<Post> getRecentPostList() {
+    return recentPostList;
+  }
 
-	public void setRecentPostList(List<Post> recentPostList) {
-		this.recentPostList = recentPostList;
-	}
+  public void setRecentPostList(List<Post> recentPostList) {
+    this.recentPostList = recentPostList;
+  }
 }

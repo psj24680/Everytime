@@ -30,205 +30,209 @@ import com.everytime.post.model.PostView;
 
 @Service
 public class PostBO {
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private PostDAO postDAO;
+  private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private LikeBO likeBO;
+  @Autowired
+  private PostDAO postDAO;
 
-	@Autowired
-	private ClippingBO clippingBO;
+  @Autowired
+  private LikeBO likeBO;
 
-	@Autowired
-	private CommentBO commentBO;
+  @Autowired
+  private ClippingBO clippingBO;
 
-	@Autowired
-	private CommentCommentBO commentCommentBO;
+  @Autowired
+  private CommentBO commentBO;
 
-	@Autowired
-	private FileManagerService fileManager;
+  @Autowired
+  private CommentCommentBO commentCommentBO;
 
-	public int addPost(int boardId, String nickname, String subject, String content, String anonymous, String userLoginId, List<MultipartFile> files) {
-		Map<String, Object> postMap = new HashMap<>();
-		postMap.put("boardId", boardId);
-		postMap.put("nickname", nickname);
-		postMap.put("subject", subject);
-		postMap.put("content", content);
-		postMap.put("anonymous", anonymous);
+  @Autowired
+  private FileManagerService fileManager;
 
-		// 이미지 파일 O
-		if (files != null) {
-			List<String> imagePathList = new ArrayList<>();
-			
-			for (MultipartFile file : files) {
-				String imagePath = fileManager.saveFile(userLoginId, file);
-				imagePathList.add(imagePath);
-			}
-			postMap.put("imagePathList", imagePathList);
-			
-			// postId 구하기
-			postDAO.insertPost(postMap); // DB에 insert를 하면서 id가 채워진 상황
-			
-			// 이미지 경로 DB에 저장하면서 결과 return
-			return postDAO.insertImagePath(postMap);
-		}
-		
-		// 이미지 파일 X
-		return postDAO.insertPost(postMap);
-	}
+  public int addPost(int boardId, String nickname, String subject, String content, String anonymous,
+      String userLoginId, List<MultipartFile> files) {
+    Map<String, Object> postMap = new HashMap<>();
+    postMap.put("boardId", boardId);
+    postMap.put("nickname", nickname);
+    postMap.put("subject", subject);
+    postMap.put("content", content);
+    postMap.put("anonymous", anonymous);
 
-	public List<Post> getPostListByBoardId(int boardId) {
-		return postDAO.selectPostListByBoardId(boardId);
-	}
+    // 이미지 파일 O
+    if (files != null) {
+      List<String> imagePathList = new ArrayList<>();
 
-	public List<Post> getRecentPostListByBoardId(int boardId) {
-		return postDAO.selectRecentPostListByBoardId(boardId);
-	}
+      for (MultipartFile file : files) {
+        String imagePath = fileManager.saveFile(userLoginId, file);
+        imagePathList.add(imagePath);
+      }
+      postMap.put("imagePathList", imagePathList);
 
-	public Post getPostById(int id) {
-		return postDAO.selectPostById(id);
-	}
+      // postId 구하기
+      postDAO.insertPost(postMap); // DB에 insert를 하면서 id가 채워진 상황
 
-	public List<String> getImagePathListById(int id) {
-		return postDAO.selectImagePathListById(id);
-	}
+      // 이미지 경로 DB에 저장하면서 결과 return
+      return postDAO.insertImagePath(postMap);
+    }
 
-	/**
-	 * boardId, postId로 PostView(게시글 상세 정보) 만들기
-	 * 
-	 * @param boardId
-	 * @param postId
-	 * @return
-	 */
-	public PostView generatePostViewByBoardIdAndPostId(int boardId, int postId) {
-		// return 할 PostView 생성
-		PostView postView = new PostView();
+    // 이미지 파일 X
+    return postDAO.insertPost(postMap);
+  }
 
-		// 글 정보
-		Post post = getPostById(postId);
-		postView.setPost(post);
+  public List<Post> getPostListByBoardId(int boardId) {
+    return postDAO.selectPostListByBoardId(boardId);
+  }
 
-		// 이미지
-		postView.setImagePath(getImagePathListById(postId));
+  public List<Post> getRecentPostListByBoardId(int boardId) {
+    return postDAO.selectRecentPostListByBoardId(boardId);
+  }
 
-		// 댓글 정보
-		postView.setCommentViewList(commentBO.generateCommentViewListByPostId(postId));
+  public Post getPostById(int id) {
+    return postDAO.selectPostById(id);
+  }
 
-		// 좋아요 개수
-		postView.setLikeCount(likeBO.getLikeCountByPostId(postId));
+  public List<String> getImagePathListById(int id) {
+    return postDAO.selectImagePathListById(id);
+  }
 
-		// 스크랩 개수
-		postView.setClippingCount(clippingBO.getClippingCountByPostId(postId));
+  /**
+   * boardId, postId로 PostView(게시글 상세 정보) 만들기
+   * 
+   * @param boardId
+   * @param postId
+   * @return
+   */
+  public PostView generatePostViewByBoardIdAndPostId(int boardId, int postId) {
+    // return 할 PostView 생성
+    PostView postView = new PostView();
 
-		// 댓글, 대댓글 개수
-		postView.setCommentCount(
-				commentBO.getCommentCountByPostId(postId) + commentCommentBO.getCommentCommentCountByPostId(postId));
+    // 글 정보
+    Post post = getPostById(postId);
+    postView.setPost(post);
 
-		return postView;
-	}
+    // 이미지
+    postView.setImagePath(getImagePathListById(postId));
 
-	public List<Post> getPostListByNickname(String nickname) {
-		return postDAO.selectPostListByNickname(nickname);
-	}
+    // 댓글 정보
+    postView.setCommentViewList(commentBO.generateCommentViewListByPostId(postId));
 
-	/**
-	 * postId, nickname으로 게시글 삭제하기
-	 * 
-	 * @param id
-	 * @param nickname
-	 * @return
-	 */
-	public int deletePostByIdAndNickname(int id, String nickname) {
-		// 이미지 삭제
-		List<String> imagePathList = postDAO.selectImagePathListById(id);
-		if (imagePathList != null) {
-			try {
-				for (String imagePath : imagePathList) {
-					fileManager.deleteFile(imagePath);
-					postDAO.deleteImagePathById(id);
-				}
-			} catch (IOException e) {
-				logger.error("[DELETE POST] 이미지 삭제 실패. postId: {}", id);
-			}
-		}
+    // 좋아요 개수
+    postView.setLikeCount(likeBO.getLikeCountByPostId(postId));
 
-		// 댓글 삭제
-		commentBO.deleteCommentByPostId(id);
+    // 스크랩 개수
+    postView.setClippingCount(clippingBO.getClippingCountByPostId(postId));
 
-		// 대댓글 삭제
-		commentCommentBO.deleteCommentCommentByPostId(id);
+    // 댓글, 대댓글 개수
+    postView.setCommentCount(commentBO.getCommentCountByPostId(postId)
+        + commentCommentBO.getCommentCommentCountByPostId(postId));
 
-		// 좋아요 삭제
-		likeBO.deleteLikeByPostId(id);
+    return postView;
+  }
 
-		// 스크랩 삭제
+  public List<Post> getPostListByNickname(String nickname) {
+    return postDAO.selectPostListByNickname(nickname);
+  }
 
-		// 글 삭제
-		return postDAO.deletePostByIdAndNickname(id, nickname);
-	}
+  /**
+   * postId, nickname으로 게시글 삭제하기
+   * 
+   * @param id
+   * @param nickname
+   * @return
+   */
+  public int deletePostByIdAndNickname(int id, String nickname) {
+    // 이미지 삭제
+    List<String> imagePathList = postDAO.selectImagePathListById(id);
+    if (imagePathList != null) {
+      try {
+        for (String imagePath : imagePathList) {
+          fileManager.deleteFile(imagePath);
+          postDAO.deleteImagePathById(id);
+        }
+      } catch (IOException e) {
+        logger.error("[DELETE POST] 이미지 삭제 실패. postId: {}", id);
+      }
+    }
 
-	/**
-	 * nickname으로 댓글 단 글 목록 불러오기
-	 * 
-	 * @param nickname
-	 * @return
-	 */
-	public List<Post> generateMyCommentViewPostListByNickname(String nickname) {
-		Set<Integer> postIdHashSet = new HashSet<>();
-		List<Post> myCommentPostList = new ArrayList<>();
+    // 댓글 삭제
+    commentBO.deleteCommentByPostId(id);
 
-		// 본인이 달았던 댓글들 불러오기
-		List<Comment> commentList = commentBO.getCommentListByNickname(nickname);
-		for (Comment comment : commentList) {
-			postIdHashSet.add(comment.getPostId());
-		}
+    // 대댓글 삭제
+    commentCommentBO.deleteCommentCommentByPostId(id);
 
-		// 본인이 달았던 대댓글들 불러오기
-		List<CommentComment> commentCommentList = commentCommentBO.getCommentCommentListByNickname(nickname);
-		for (CommentComment commentComment : commentCommentList) {
-			postIdHashSet.add(commentComment.getPostId());
-		}
+    // 좋아요 삭제
+    likeBO.deleteLikeByPostId(id);
 
-		// postId 내림차순 정렬 - HashSet을 List로 변환 후 변환
-		List<Integer> postIdList = new ArrayList<>(postIdHashSet);
-		Collections.sort(postIdList, Collections.reverseOrder());
+    // 스크랩 삭제
 
-		// postIdList에 저장된 postId로 List 만들기
-		Iterator<Integer> iter = postIdList.iterator();
-		while (iter.hasNext()) {
-			myCommentPostList.add(getPostById(iter.next()));
-		}
+    // 글 삭제
+    return postDAO.deletePostByIdAndNickname(id, nickname);
+  }
 
-		return myCommentPostList;
-	}
+  /**
+   * nickname으로 댓글 단 글 목록 불러오기
+   * 
+   * @param nickname
+   * @return
+   */
+  public List<Post> generateMyCommentViewPostListByNickname(String nickname) {
+    Set<Integer> postIdHashSet = new HashSet<>();
+    List<Post> myCommentPostList = new ArrayList<>();
 
-	/**
-	 * userId로 내 스크랩 목록 불러오기
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	public List<Post> generateMyClippingViewPostListByUserId(int userId) {
-		List<Integer> postIdList = new ArrayList<>();
-		List<Post> myClippingList = new ArrayList<>();
+    // 본인이 달았던 댓글들 불러오기
+    List<Comment> commentList = commentBO.getCommentListByNickname(nickname);
+    for (Comment comment : commentList) {
+      postIdHashSet.add(comment.getPostId());
+    }
 
-		// 로그인 시 세션에 저장된 userId로 clipping 테이블에서 postId 불러오기
-		List<Clipping> clippingList = clippingBO.getClippingByUserId(userId);
-		for (Clipping clipping : clippingList) {
-			postIdList.add(clipping.getPostId());
-		}
+    // 본인이 달았던 대댓글들 불러오기
+    List<CommentComment> commentCommentList =
+        commentCommentBO.getCommentCommentListByNickname(nickname);
+    for (CommentComment commentComment : commentCommentList) {
+      postIdHashSet.add(commentComment.getPostId());
+    }
 
-		// postId 내림차순 정렬
-		Collections.sort(postIdList, Collections.reverseOrder());
+    // postId 내림차순 정렬 - HashSet을 List로 변환 후 변환
+    List<Integer> postIdList = new ArrayList<>(postIdHashSet);
+    Collections.sort(postIdList, Collections.reverseOrder());
 
-		// postIdList에 저장된 postId로 List 만들기
-		Iterator<Integer> iter = postIdList.iterator();
-		while (iter.hasNext()) {
-			myClippingList.add(getPostById(iter.next()));
-		}
+    // postIdList에 저장된 postId로 List 만들기
+    Iterator<Integer> iter = postIdList.iterator();
+    while (iter.hasNext()) {
+      myCommentPostList.add(getPostById(iter.next()));
+    }
 
-		return myClippingList;
-	}
+    return myCommentPostList;
+  }
+
+  /**
+   * userId로 내 스크랩 목록 불러오기
+   * 
+   * @param userId
+   * @return
+   */
+  public List<Post> generateMyClippingViewPostListByUserId(int userId) {
+    List<Integer> postIdList = new ArrayList<>();
+    List<Post> myClippingList = new ArrayList<>();
+
+    // 로그인 시 세션에 저장된 userId로 clipping 테이블에서 postId 불러오기
+    List<Clipping> clippingList = clippingBO.getClippingByUserId(userId);
+    for (Clipping clipping : clippingList) {
+      postIdList.add(clipping.getPostId());
+    }
+
+    // postId 내림차순 정렬
+    Collections.sort(postIdList, Collections.reverseOrder());
+
+    // postIdList에 저장된 postId로 List 만들기
+    Iterator<Integer> iter = postIdList.iterator();
+    while (iter.hasNext()) {
+      myClippingList.add(getPostById(iter.next()));
+    }
+
+    return myClippingList;
+  }
+
 }

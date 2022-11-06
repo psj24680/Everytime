@@ -15,20 +15,28 @@ import com.everytime.like.bo.LikeBO;
 @RestController
 public class LikeRestController {
 
-	@Autowired
-	private LikeBO likeBO;
+  @Autowired
+  private LikeBO likeBO;
 
-	@RequestMapping("/like")
-	public Map<String, Object> like(
-			@RequestParam("boardId") int boardId,
-			@RequestParam("postId") int postId,
-			HttpSession session) {
-		Map<String, Object> result = new HashMap<>();
+  /**
+   * 좋아요
+   * 
+   * @param boardId
+   * @param postId
+   * @param session
+   * @return
+   */
+  @RequestMapping("/like")
+  public Map<String, Object> like(
+      @RequestParam("boardId") int boardId,
+      @RequestParam("postId") int postId,
+      HttpSession session) {
+    Map<String, Object> result = new HashMap<>();
 
-		likeBO.like(boardId, postId, (int) session.getAttribute("userId"));
-		result.put("result", "success");
+    likeBO.like(boardId, postId, (int) session.getAttribute("userId"));
+    result.put("result", "success");
 
-		return result;
-	}
+    return result;
+  }
 
 }

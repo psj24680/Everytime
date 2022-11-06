@@ -13,56 +13,55 @@ import com.everytime.user.bo.UserBO;
 @RequestMapping("/user")
 public class UserController {
 
-	@Autowired
-	private UserBO userBO;
+  @Autowired
+  private UserBO userBO;
 
-	/**
-	 * 로그인 화면
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/sign_in_view")
-	public String signInView() {
-		return "user/sign_in_view";
-	}
+  /**
+   * 로그인 화면
+   * 
+   * @return
+   */
+  @RequestMapping("/sign_in_view")
+  public String signInView() {
+    return "user/sign_in_view";
+  }
 
-	/**
-	 * 회원가입 화면
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/sign_up_view")
-	public String signUpView() {
-		return "user/sign_up_view";
-	}
+  /**
+   * 회원가입 화면
+   * 
+   * @return
+   */
+  @RequestMapping("/sign_up_view")
+  public String signUpView() {
+    return "user/sign_up_view";
+  }
 
-	/**
-	 * 로그아웃
-	 * 
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/sign_out")
-	public String signOut(HttpSession session) {
-		session.removeAttribute("userId");
-		session.removeAttribute("userLoginId");
+  /**
+   * 로그아웃
+   * 
+   * @param session
+   * @return
+   */
+  @RequestMapping("/sign_out")
+  public String signOut(HttpSession session) {
+    session.invalidate();
 
-		return "user/sign_in_view";
-	}
+    return "user/sign_in_view";
+  }
 
-	/**
-	 * 내 정보 화면
-	 * 
-	 * @param session
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping("/my_page_view")
-	public String myPageView(HttpSession session, Model model) {
-		model.addAttribute("user", userBO.getUserById((int) session.getAttribute("userId")));
-		model.addAttribute("viewName", "user/my_page_view");
+  /**
+   * 내 정보 화면
+   * 
+   * @param session
+   * @param model
+   * @return
+   */
+  @RequestMapping("/my_page_view")
+  public String myPageView(HttpSession session, Model model) {
+    model.addAttribute("user", userBO.getUserById((int) session.getAttribute("userId")));
+    model.addAttribute("viewName", "user/my_page_view");
 
-		return "template/layout";
-	}
+    return "template/layout";
+  }
 
 }

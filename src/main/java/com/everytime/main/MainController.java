@@ -21,44 +21,46 @@ import com.everytime.user.bo.UserBO;
 @RequestMapping("/main")
 public class MainController {
 
-	@Autowired
-	private UserBO userBO;
+  @Autowired
+  private UserBO userBO;
 
-	@Autowired
-	private BoardBO boardBO;
+  @Autowired
+  private BoardBO boardBO;
 
-	@Autowired
-	private PostBO postBO;
+  @Autowired
+  private PostBO postBO;
 
-	/**
-	 * 메인 화면
-	 * 
-	 * @param model
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/main_view")
-	public String mainView(
-			Model model,
-			HttpSession session) {
-		// 유저 정보 불러오기
-		int userId = (int) session.getAttribute("userId");
-		model.addAttribute("user", userBO.getUserById(userId));
+  /**
+   * 메인 화면
+   * 
+   * @param model
+   * @param session
+   * @return
+   */
+  @RequestMapping("/main_view")
+  public String mainView(
+      Model model,
+      HttpSession session) {
+    // 유저 정보 불러오기
+    Integer userId = (Integer) session.getAttribute("userId");
+    if (userId != null) {
+      model.addAttribute("user", userBO.getUserById(userId));
+    }
 
-		// 최근 게시글 불러오기
-		Map<String, Object> boardMap = new LinkedHashMap<>();
-		List<Board> boardList = boardBO.getBoardList();
-		for (Board board : boardList) {
-			MainView mainView = new MainView();
-			mainView.setBoard(board);
-			mainView.setRecentPostList(postBO.getRecentPostListByBoardId(board.getId()));
-			boardMap.put(board.getName(), mainView);
-		}
+    // 최근 게시글 불러오기 - TODO: BO에서 처리하기
+    Map<String, Object> boardMap = new LinkedHashMap<>();
+    List<Board> boardList = boardBO.getBoardList();
+    for (Board board : boardList) {
+      MainView mainView = new MainView();
+      mainView.setBoard(board);
+      mainView.setRecentPostList(postBO.getRecentPostListByBoardId(board.getId()));
+      boardMap.put(board.getName(), mainView);
+    }
 
-		model.addAttribute("boardMap", boardMap);
-		model.addAttribute("viewName", "main/main_view");
+    model.addAttribute("boardMap", boardMap);
+    model.addAttribute("viewName", "main/main_view");
 
-		return "template/layout";
-	}
+    return "template/layout";
+  }
 
 }

@@ -12,18 +12,19 @@ import com.everytime.interceptor.PermissionInterceptor;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-	@Autowired
-	private PermissionInterceptor interceptor;
+  @Autowired
+  private PermissionInterceptor interceptor;
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(interceptor).addPathPatterns("/**") // /** 아래 path까지 모두 확인
-				.excludePathPatterns("/error", "/static/**", "/user/sign_out"); // 예외 - interceptor 안 타게
-	}
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry.addInterceptor(interceptor).addPathPatterns("/**") // /** 아래 path까지 모두 확인
+        .excludePathPatterns("/error", "/static/**", "/user/sign_out"); // 예외 - interceptor 안 타게
+  }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/images/**")
-				.addResourceLocations("file:///" + FileManagerService.FILE_UPLOAD_PATH);
-	}
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/images/**")
+        .addResourceLocations("file:///" + FileManagerService.FILE_UPLOAD_PATH);
+  }
+
 }

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div>
@@ -109,7 +108,7 @@
 			$('.file-name').addClass('d-none');
 			$('#uploadFile').click();
 		});
-		
+
 		// 파일 업로드를 했을 때 확장자 이름 노출, 파일 확장자 검증
 		$('#uploadFile').on('change', function(e) {
 			if (e.target.files.length > 1) { // 여러 장 선택 시
@@ -119,33 +118,33 @@
 					arr.push(e.target.files[i].name.split("."));
 					if (arr[i][1] != 'jpg' && arr[i][1] != 'jpeg' && arr[i][1] != 'png' && arr[i][1] != 'gif') {
 						alert("이미지 파일만 업로드 할 수 있습니다. 다시 선택해주세요.");
-						
+
 						$(this).val('');
 						$('.file-name').text('');
 						$('.file-name').addClass('d-none');
 						return;
 					}
-					
+
 					$('.file-name').removeClass('d-none');
 					$('.file-name').append(e.target.files[i].name + " / ");
 				}
 			} else { // 한 장 선택 시
 				let arr = e.target.files[0].name.split('.');
-				
+
 				if (arr[arr.length - 1] != 'jpg' && arr[arr.length - 1] != 'jpeg' && arr[arr.length - 1] != 'png' && arr[arr.length - 1] != 'gif') {
 					alert("이미지 파일만 업로드 할 수 있습니다. 다시 선택해주세요.");
-					
+
 					$(this).val('');
 					$('.file-name').text('');
 					$('.file-name').addClass('d-none');
 					return;
 				}
-				
+
 				$('.file-name').removeClass('d-none');
 				$('.file-name').append(arr[0]);
 			}
 		});
-		
+
 		// 파일 업로드 취소
 		$('.file-name').on('click', function() {
 			$('#uploadFile').val('');
@@ -192,7 +191,7 @@
 			} else {
 				anonymous = "X";
 			}
-			
+
 			/* console.log($('#uploadFile').get(0).files);
 			alert($('#uploadFile').get(0).files); */
 
@@ -207,7 +206,7 @@
 					formData.append("images", $('#uploadFile').get(0).files[i]);
 				}
 			}
-			
+
 			// AJAX - DB insert
 			$.ajax({
 				type : "POST",
@@ -215,7 +214,7 @@
 				data : formData,
 				processData : false,
 				contentType : false,
-				enctype: 'multipart/form-data',
+				enctype : 'multipart/form-data',
 				success : function(data) {
 					if (data.result == "success") {
 						location.reload(true);
