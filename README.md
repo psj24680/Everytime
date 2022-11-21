@@ -7,10 +7,10 @@
 <br>
 
 ## URL / 주소
-- [http://34.219.91.63:8080/main/main_view](http://34.213.248.167:8080/main/main_view)
+- AWS 서버 업로드 예정
 - 테스트 계정
-  - ID: admin
-  - PASSWORD: admin
+  - ID: 
+  - PASSWORD: 
 
 <br>
 
@@ -25,7 +25,7 @@
 <br>
 
 ## Project Proposal / 프로젝트 기획
-- 기획서: 
+- 초기 기획: https://ovenapp.io/view/kFP1sv6qeJyx4BFUSyukqfsGVax0JWqv/czhaW
 - 일정표: https://docs.google.com/spreadsheets/d/1mTG6yU_bk6F7qbatCn-MDhCtotLYP_5wGC0VflAqADc/edit?usp=sharing 
 
 <br>
@@ -35,6 +35,7 @@
 <br>
 
 ## 향후 추가할 요소
+- 부트스트랩 템플릿 적용
 - 지도 API를 통한 모임 주최 기능 추가
 - 지도 API를 통한 전기차 충전소 조회 기능 추가
 - 풀캘린더 API를 통한 시간표 작성 기능 추가
